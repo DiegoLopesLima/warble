@@ -1,6 +1,6 @@
 # Warble
 
-A library to handle and validate their client side and server side data.
+Warble is a client side and server side library to quickly handle your data writing less and doing more.
 
 ## Table of contents
 
