@@ -1,7 +1,7 @@
 {
   "name": "warble",
   "version": "1.0.0-alpha.1",
-  "description": "A library to handle and validate their client side and server side data.",
+  "description": "Warble is a client side and server side library to quickly handle your data writing less and doing more.",
   "main": "warble.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
