@@ -1,0 +1,19 @@
+{
+  "name": "warble",
+  "version": "1.0.0-alpha.1",
+  "description": "A library to handle and validate their client side and server side data.",
+  "main": "warble.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tradusy/warble.git"
+  },
+  "author": "Diego Lopes Lima",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Tradusy/warble/issues"
+  },
+  "homepage": "https://github.com/Tradusy/warble#readme"
+}
