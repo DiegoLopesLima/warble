@@ -1,2 +1,6 @@
+# Folders
+bower_components
 node_module
+
+# Files
 *.log
