@@ -44,9 +44,11 @@ model.test(data); // true
 
 data.is(model); // true
 
+warble.is(data, model); // true
+
 warble.is([], 'array'); // true
 
-warble.type(new Date, 'date'); // true
+warble.type(new Date) === 'date' // true
 
 ```
 
