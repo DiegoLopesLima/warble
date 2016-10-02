@@ -21,13 +21,13 @@ Install with [Bower](https://bower.io/): `bower install warble#1.0.0-alpha.1 --s
 ```javascript
 var
 
-	data = validate.data({
+	data = warble.data({
 		'name': 'Diego'
 		'surname': 'Lopes Lima',
 		'age': 23
 	}),
 
-	model = validate.model({
+	model = warble.model({
 		'name': {
 			'required': true
 		},
@@ -40,18 +40,23 @@ var
 		}
 	});
 
-// Returns true
-console.log(model.test(data));
+model.test(data); // true
+
+data.is(model); // true
+
+warble.is([], 'array'); // true
+
+warble.type(new Date, 'date'); // true
 
 ```
 
 ## Contributing
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque numquam, quidem ipsam. Eligendi corporis porro molestias dicta veniam, non quibusdam repellat voluptas magnam similique, nam asperiores sapiente ipsum. Eaque, omnis!
+Please read [contributing]() documentation.
 
 ## Credits
 
-Author: [Diego Lopes Lima](https://github.com/DiegoLopesLima).
+Created and maintained by [Diego Lopes Lima](https://github.com/DiegoLopesLima).
 
 ## License
 
