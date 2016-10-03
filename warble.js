@@ -4,6 +4,8 @@
 
 	function Data(data) {
 
+		this.originalData = data;
+
 		this.data = data;
 
 	}
@@ -21,11 +23,9 @@
 			'numeric': /^\d+(?:\.\d+)?$/
 		},
 
-		is = {},
-
 		toString = re.toString,
 
-		validate = {
+		warble = {
 			'data': function(data) {
 
 				return new Data(data);
@@ -38,7 +38,19 @@
 			},
 			'is': function(data, type) {
 
-				return;
+				if (warble.type(type) === 'model')
+
+					if (warble.type(data) === 'data')
+
+						return data.is(type);
+
+					else
+
+						return false;
+
+				else
+
+					return warble.type(data) === type;
 
 			},
 			'type': function(data) {
@@ -65,7 +77,12 @@
 
 	Data.prototype = {
 		'constructor': Data,
-		'toQuery': function() {
+		'toString': function() {
+
+			return JSON.stringfy(this.data);
+
+		},
+		'toQueryString': function() {
 
 			return;
 
@@ -91,17 +108,23 @@
 		'constructor': Model,
 		'test': function(data) {
 
-			return;
+			if (warble.type(data) === 'data')
+
+				return data.is(this);
+
+			else
+
+				return false;
 
 		}
 	};
 
 	if (typeof module === 'object' && typeof module.exports === 'object')
 
-		module.exports = validate;
+		module.exports = warble;
 
 	else
 
-		global.validate = validate;
+		global.warble = warble;
 
 })(this);
