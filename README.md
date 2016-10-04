@@ -12,9 +12,9 @@ Warble is a client side and server side library to quickly handle your data writ
 
 ## Instalation
 
-Install with [NPM](https://www.npmjs.com/): `npm install warble@1.0.0-alpha.1 --save`
+Install with [NPM](https://www.npmjs.com/): `npm install warble@1.0.0-alpha.1`
 
-Install with [Bower](https://bower.io/): `bower install warble#1.0.0-alpha.1 --save`
+Install with [Bower](https://bower.io/): `bower install warble#1.0.0-alpha.1`
 
 ## Usage
 
@@ -22,7 +22,7 @@ Install with [Bower](https://bower.io/): `bower install warble#1.0.0-alpha.1 --s
 var
 
 	data = warble.data({
-		'name': 'Diego'
+		'name': 'Diego',
 		'surname': 'Lopes Lima',
 		'age': 23
 	}),
@@ -48,8 +48,15 @@ warble.is(data, model); // true
 
 warble.is([], 'array'); // true
 
-warble.type(new Date) // 'date'
+warble.type(new Date); // 'date'
 
+data.extend({'birthDate': '1993-03-27T03:00:00.000Z'}); // {'name': 'Diego', 'surname': 'Lopes Lima', 'age': 23, 'birthDate': '1993-03-27T03:00:00.000Z'}
+
+data.isolate('name', 'surname'); // {'name': 'Diego', 'surname': 'Lopes Lima'}
+
+data.get('name'); // 'Diego'
+
+data.set('name', 'Gustavo'); // {'name': 'Gustavo', 'surname': 'Lopes Lima', 'age': 23}
 ```
 
 ## Contributing
