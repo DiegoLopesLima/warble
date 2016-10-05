@@ -23,9 +23,80 @@
 			'numeric': /^\d+(?:\.\d+)?$/
 		},
 
-		toString = re.toString,
+		is = {
+			'integer': function(value) {
+
+				return re.integer.test(value);
+
+			},
+			'numeric': function(value) {
+
+				return re.numeric.test(value);
+
+			}
+		},
+
+		emptyArray = [],
+
+		toString = emptyArray.toString,
 
 		warble = {
+			'type': function(data) {
+
+				return toString.call(data).toLowerCase().replace(/^\[object (\w+)\]$/, '$1');
+
+			},
+			'each': function(object, callback) {
+
+				if (warble.type(object) === 'array')
+
+					for (var index = 0, size = object.length; index < size; index++)
+
+						callback.call(object[index], index, object[index]);
+
+				else
+
+					for (var index in object)
+
+						callback.call(object[index], index, object[index]);
+
+				return object;
+
+			},
+			'extend': function(target) {
+
+				if (typeof target === 'object')
+
+					warble.each(emptyArray.slice.call(arguments, 1), function(index, argument) {
+
+						warble.each(argument, function(property, value) {
+
+							target[property] = value;
+
+						});
+
+					});
+
+				return target;
+
+			},
+			'is': function(data, type) {
+
+				if (warble.type(data) === 'data' && warble.type(type) === 'model')
+
+					return data.is(type);
+
+				else
+
+					if (is.hasOwnProperty(type))
+
+						return is[type](data);
+
+					else
+
+						return warble.type(data) === type;
+
+			},
 			'data': function(data) {
 
 				return new Data(data);
@@ -35,43 +106,6 @@
 
 				return new Model(model);
 
-			},
-			'is': function(data, type) {
-
-				if (warble.type(type) === 'model')
-
-					if (warble.type(data) === 'data')
-
-						return data.is(type);
-
-					else
-
-						return false;
-
-				else
-
-					return warble.type(data) === type;
-
-			},
-			'type': function(data) {
-
-				return toString.call(data).toLowerCase().replace(/^\[object (\w+)\]$/, '$1');
-
-			},
-			'serialize': function(element) {
-
-				return;
-
-			},
-			'extend': function() {
-
-				return;
-
-			},
-			'isolate': function() {
-
-				return;
-
 			}
 		};
 
@@ -79,7 +113,7 @@
 		'constructor': Data,
 		'toString': function() {
 
-			return JSON.stringfy(this.data);
+			return JSON.stringify(this.data);
 
 		},
 		'toQueryString': function() {
@@ -87,14 +121,22 @@
 			return;
 
 		},
-		'is': function(type) {
+		'is': function(model) {
 
-			return;
+			var valid = false;
+
+			if (warble.type(model) === 'model')
+
+				valid = true;
+
+			return valid;
 
 		},
 		'extend': function() {
 
-			return;
+			warble.extend.apply(this.data, emptyArray.slice.call(arguments, 1));
+
+			return this.data;
 
 		},
 		'isolate': function() {
@@ -108,13 +150,7 @@
 		'constructor': Model,
 		'test': function(data) {
 
-			if (warble.type(data) === 'data')
-
-				return data.is(this);
-
-			else
-
-				return false;
+			return warble.type(data) === 'data' ? data.is(this) : false;
 
 		}
 	};
