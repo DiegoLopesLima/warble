@@ -33,6 +33,28 @@
 
 				return re.numeric.test(value);
 
+			},
+			'plain-object': function(value) {
+
+				if (!value || !warble.is(value, 'object'))
+
+					return false;
+
+				if (!value.prototype)
+
+					return true;
+
+				return value.prototype.hasOwnProperty('constructor') && value.constructor.name === 'Object';
+
+			},
+			'empty-object': function(value) {
+
+				for (var name in value)
+
+					return false;
+
+				return true;
+
 			}
 		},
 
@@ -42,6 +64,10 @@
 
 		warble = {
 			'type': function(data) {
+
+				if (data === null)
+
+					return 'null';
 
 				return toString.call(data).toLowerCase().replace(/^\[object (\w+)\]$/, '$1');
 
