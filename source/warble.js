@@ -72,6 +72,23 @@
 				return toString.call(data).toLowerCase().replace(/^\[object (\w+)\]$/, '$1');
 
 			},
+			'is': function(data, type) {
+
+				if (warble.type(data) === 'data' && warble.type(type) === 'model')
+
+					return data.is(type);
+
+				else
+
+					if (is.hasOwnProperty(type))
+
+						return is[type](data);
+
+					else
+
+						return warble.type(data) === type;
+
+			},
 			'each': function(object, callback) {
 
 				if (warble.type(object) === 'array')
@@ -104,23 +121,6 @@
 					});
 
 				return target;
-
-			},
-			'is': function(data, type) {
-
-				if (warble.type(data) === 'data' && warble.type(type) === 'model')
-
-					return data.is(type);
-
-				else
-
-					if (is.hasOwnProperty(type))
-
-						return is[type](data);
-
-					else
-
-						return warble.type(data) === type;
 
 			},
 			'data': function(data) {

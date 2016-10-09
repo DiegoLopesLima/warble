@@ -4,7 +4,7 @@
   "description": "Warble is a client side and server side library to quickly handle your data writing less and doing more.",
   "main": "warble.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "gulp test"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Tradusy/warble#readme",
   "devDependencies": {
-    "gulp": "^3.9.1"
+    "gulp": "^3.9.1",
+    "gulp-jasmine": "^2.4.2"
   }
 }
