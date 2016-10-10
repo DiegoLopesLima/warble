@@ -18,4 +18,10 @@ gulp
 
 	})
 
+	.task('watch', function() {
+
+		gulp.watch(path.join('source', '**', '*.js'), ['test']);
+
+	})
+
 	.task('default', []);
