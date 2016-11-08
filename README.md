@@ -59,6 +59,10 @@ data.get('name'); // 'Diego'
 data.set('name', 'Gustavo'); // {'name': 'Gustavo', 'surname': 'Lopes Lima', 'age': 23}
 ```
 
+## Changelog
+
+Previous [releases](https://github.com/Tradusy/warble/releases) and their documentation are also available for download.
+
 ## Contributing
 
 Please read [contributing]() documentation.
