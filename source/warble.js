@@ -1,192 +1,245 @@
-;(function(global, undefined) {
+{
 
 	'use strict';
 
-	function Data(data) {
+	let
 
-		this.originalData = data;
+		objectTypes = ['Boolean', 'Number', 'String', 'Function', 'Array', 'Date', 'RegExp', 'Object', 'Error', 'Symbol'],
 
-		this.data = data;
+		typesReference = {},
 
-	}
+		toString = typesReference.toString;
 
-	function Model(model) {
+	for (let index = 0, size = objectTypes.length; index < size; index++)
 
-		this.model = model;
+		typesReference['[object ' + objectTypes[index] + ']'] = objectTypes[index].toLowerCase();
 
-	}
-
-	var
+	class WarbleCore {
 
 		re = {
-			'integer': /^\d+$/,
-			'numeric': /^\d+(?:\.\d+)?$/
-		},
+			// https://www.w3.org/TR/html5/forms.html#e-mail-state-(type=email)
+			'email': /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+			'integer': /^\d+$/
+		};
 
-		is = {
-			'integer': function(value) {
+		isHooks = {
+			emptyObject(object) {
 
-				return re.integer.test(value);
-
-			},
-			'numeric': function(value) {
-
-				return re.numeric.test(value);
-
-			},
-			'plain-object': function(value) {
-
-				if (!value || !warble.is(value, 'object'))
-
-					return false;
-
-				if (!value.prototype)
-
-					return true;
-
-				return value.prototype.hasOwnProperty('constructor') && value.constructor.name === 'Object';
-
-			},
-			'empty-object': function(value) {
-
-				for (var name in value)
+				for (let index in object)
 
 					return false;
 
 				return true;
 
-			}
-		},
-
-		emptyArray = [],
-
-		toString = emptyArray.toString,
-
-		warble = {
-			'type': function(data) {
-
-				if (data === null)
-
-					return 'null';
-
-				return toString.call(data).toLowerCase().replace(/^\[object (\w+)\]$/, '$1');
-
 			},
-			'is': function(data, type) {
+			email: (value) => this.re.email.test(value),
+			integer: (value) => this.re.integer.test(value)
+		};
 
-				if (warble.type(data) === 'data' && warble.type(type) === 'model')
+		testHooks = {
+			required: (value, isRequired) => isRequired ? value !== undefined : true,
+			pattern: (value, pattern) => (typeof pattern === 'object' && typeof pattern.test === 'function' ? pattern : new RegExp(pattern)).test(value),
+			min: (value, min = 0) => (Number(value) || 0) >= (Number(min) || 0),
+			max: (value, max = Infinity) => (Number(value) || 0) <= (Number(max) || 0),
+			minlength: (value, min = 0) => typeof value === 'string' ? value.length >= (Number(min) || 0) : false,
+			maxlength: (value, max = Infinity) => typeof value === 'string' ? value.length <= (Number(max) || 0) : false,
+			type: (value, type) => core.type(value) === type,
+			is(value, types) {
 
-					return data.is(type);
+				var response = [];
 
-				else
+				if (core.is(types, 'array')) {
 
-					if (is.hasOwnProperty(type))
+					for (let index = 0, size = types.length; index < size; index++)
 
-						return is[type](data);
+						if (!core.is(value, types[index]))
 
-					else
+							response.push(types[index]);
 
-						return warble.type(data) === type;
+				} else if (!core.is(value, types))
 
-			},
-			'each': function(object, callback) {
+					response.push(types);
 
-				if (warble.type(object) === 'array')
-
-					for (var index = 0, size = object.length; index < size; index++)
-
-						callback.call(object[index], index, object[index]);
-
-				else
-
-					for (var index in object)
-
-						callback.call(object[index], index, object[index]);
-
-				return object;
-
-			},
-			'extend': function(target) {
-
-				if (typeof target === 'object')
-
-					warble.each(emptyArray.slice.call(arguments, 1), function(index, argument) {
-
-						warble.each(argument, function(property, value) {
-
-							target[property] = value;
-
-						});
-
-					});
-
-				return target;
-
-			},
-			'data': function(data) {
-
-				return new Data(data);
-
-			},
-			'model': function(model) {
-
-				return new Model(model);
+				return response.length > 0 ? response : true;
 
 			}
 		};
 
-	Data.prototype = {
-		'constructor': Data,
-		'toString': function() {
+		type = (value) => value === null ? 'null' : (typeof value === 'object' || typeof value === 'function' ? typesReference[toString.call(value)] || 'object' : typeof value);
 
-			return JSON.stringify(this.data);
+		is = (value, type) => this.isHooks.hasOwnProperty(type) ? !!this.isHooks[type](value) : this.type(value) === type;
 
-		},
-		'toQueryString': function() {
+	}
 
-			return;
+	let core = new WarbleCore;
 
-		},
-		'is': function(model) {
+	class WarbleFragment {
 
-			var valid = false;
+		constructor(value) {
 
-			if (warble.type(model) === 'model')
+			this.value = value;
 
-				valid = true;
+			this.valid = true;
 
-			return valid;
+			this.invalid = false;
 
-		},
-		'extend': function() {
-
-			warble.extend.apply(this.data, emptyArray.slice.call(arguments, 1));
-
-			return this.data;
-
-		},
-		'isolate': function() {
-
-			return;
+			this.error = {};
 
 		}
-	};
 
-	Model.prototype = {
-		'constructor': Model,
-		'test': function(data) {
+		test(name, param) {
 
-			return warble.type(data) === 'data' ? data.is(this) : false;
+			var response = core.testHooks.hasOwnProperty(name) ? core.testHooks[name](this.value, param) : true;
+
+			if (!response || core.is(response, 'array')) {
+
+				this.valid = false;
+
+				this.invalid = true;
+
+				this.error[name] = true;
+
+				if (core.is(response, 'array'))
+
+					for (let index = 0, size = response.length; index < size; index++)
+
+						this.error[name + ':' + response[index]] = true;
+
+			} else
+
+				delete this.error[name];
+
+			return this;
 
 		}
+
+	}
+
+	class WarbleModel {
+
+		constructor(model) {
+
+			if (typeof model === 'object')
+
+				this.model = model;
+
+			else
+
+				throw new Error('WarbleModel expects an object.');
+
+		}
+
+		validate(data) {
+
+			if (typeof data === 'object') {
+
+				let
+
+					response = {
+						'data': {},
+						'valid': true,
+						'invalid': false
+					};
+
+				for (let index in this.model) {
+
+					let value = new WarbleFragment(data[index]);
+
+					if (this.model.hasOwnProperty(index) && typeof this.model[index] === 'object')
+
+						for (let test in this.model[index]) {
+
+							let current = value.test(test, this.model[index][test]);
+
+							if (current.invalid) {
+
+								response.valid = false;
+
+								response.invalid = true;
+
+							}
+
+						}
+
+					response.data[index] = value;
+
+				}
+
+				return response;
+
+			} else
+
+				throw new Error('WarbleModel.validate expects an object.');
+
+		}
+
+	}
+
+	class Warble extends WarbleCore {
+
+		model = (model) => new WarbleModel(model);
+
+		validate(value, options) {
+
+			if (typeof options === 'object') {
+
+				var value = new WarbleFragment(value);
+
+				for (let index in options)
+
+					value.test(index, options[index]);
+
+				return value;
+
+			} else
+
+				throw new Error('Warble.validate expects an object.');
+
+		}
+
+	}
+
+	var warble = new Warble;
+
+};
+
+//
+
+warble.isHooks.foo = function(value) {
+
+	return value > 0;
+
+};
+
+let
+
+	schema = warble.model({
+		'name': {
+			'required': true,
+			'minlength': 3
+		},
+		'surname': {
+			'required': true,
+			'minlength': 3
+		},
+		'age': {
+			'required': true,
+			'min': 18
+		},
+		'email': {
+			'is': 'email'
+		}
+	}),
+
+	data = {
+		'name': 'Diego',
+		'surname': 'Lopes Lima',
+		'age': 23,
+		'email': 'web.diego.lima@'
 	};
 
-	if (typeof module === 'object' && typeof module.exports === 'object')
+console.log(schema.validate(data));
 
-		module.exports = warble;
+console.log(warble.validate(data.name, schema.model.name));
 
-	else
-
-		global.warble = warble;
-
-})(this);
+console.log(warble.type([]));
