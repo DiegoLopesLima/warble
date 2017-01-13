@@ -36,7 +36,7 @@
 			integer: (value) => this.re.integer.test(value)
 		};
 
-		testHooks = {
+		validateHooks = {
 			required: (value, isRequired) => isRequired ? value !== undefined : true,
 			pattern: (value, pattern) => (typeof pattern === 'object' && typeof pattern.test === 'function' ? pattern : new RegExp(pattern)).test(value),
 			min: (value, min = 0) => (Number(value) || 0) >= (Number(min) || 0),
@@ -87,9 +87,9 @@
 
 		}
 
-		test(name, param) {
+		validate(name, param) {
 
-			var response = core.testHooks.hasOwnProperty(name) ? core.testHooks[name](this.value, param) : true;
+			var response = core.validateHooks.hasOwnProperty(name) ? core.validateHooks[name](this.value, param) : true;
 
 			if (!response || core.is(response, 'array')) {
 
@@ -147,9 +147,9 @@
 
 					if (this.model.hasOwnProperty(index) && typeof this.model[index] === 'object')
 
-						for (let test in this.model[index]) {
+						for (let validation in this.model[index]) {
 
-							let current = value.test(test, this.model[index][test]);
+							let current = value.validate(validation, this.model[index][validation]);
 
 							if (current.invalid) {
 
@@ -187,7 +187,7 @@
 
 				for (let index in options)
 
-					value.test(index, options[index]);
+					value.validate(index, options[index]);
 
 				return value;
 
@@ -205,9 +205,9 @@
 
 //
 
-warble.isHooks.foo = function(value) {
+warble.isHooks.gmail = function(value) {
 
-	return value > 0;
+	return /\@gmail\.com$/i.test(value);
 
 };
 
@@ -227,7 +227,7 @@ let
 			'min': 18
 		},
 		'email': {
-			'is': 'email'
+			'is': ['email', 'gmail']
 		}
 	}),
 
@@ -235,7 +235,7 @@ let
 		'name': 'Diego',
 		'surname': 'Lopes Lima',
 		'age': 23,
-		'email': 'web.diego.lima@'
+		'email': 'web.diego.lima@yahoo.com'
 	};
 
 console.log(schema.validate(data));
