@@ -19,6 +19,12 @@ Install with [Bower](https://bower.io/): `bower install warble#1.0.0-alpha.1`
 ## Usage
 
 ```javascript
+warble.isHooks.gmail = function(value) {
+
+	return /\@gmail\.com$/i.test(value);
+
+};
+
 let
 
 	schema = warble.model({
