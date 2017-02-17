@@ -19,44 +19,114 @@ Install with [Bower](https://bower.io/): `bower install warble#1.0.0-alpha.1`
 ## Usage
 
 ```javascript
-var
+let
 
-	data = warble.data({
-		'name': 'Diego',
-		'surname': 'Lopes Lima',
-		'age': 23
-	}),
-
-	model = warble.model({
+	schema = warble.model({
 		'name': {
-			'required': true
+			'required': true,
+			'minlength': 3
 		},
 		'surname': {
-			'required': true
+			'required': true,
+			'minlength': 3
 		},
 		'age': {
 			'required': true,
-			'type': 'number'
+			'min': 18
+		},
+		'email': {
+			'is': ['email', 'gmail']
 		}
-	});
+	}),
 
-model.test(data); // true
+	data = {
+		'name': 'Diego',
+		'surname': 'Lopes Lima',
+		'age': 23,
+		'email': 'web.diego.lima@yahoo.com'
+	};
+```
 
-data.is(model); // true
+Validating object:
 
-warble.is(data, model); // true
+```javascript
+console.log(schema.validate(data));
+```
 
-warble.is([], 'array'); // true
+Return:
 
-warble.type(new Date); // 'date'
+```javascript
+Object {
+	"data": Object {
+		"age": 23,
+		"email": "web.diego.lima@yahoo.com",
+		"name": "Diego",
+		"surname": "Lopes Lima"
+	},
+	"invalid": true,
+	"results": Object {
+		"age": WarbleFragment {
+			"error": Object {},
+			"invalid": false,
+			"valid": true,
+			"value": 23
+		},
+		"email": WarbleFragment {
+			"error": Object {
+				"is": true,
+				"is:gmail": true
+			},
+			"invalid": true,
+			"valid": false,
+			"value": "web.diego.lima@yahoo.com"
+		},
+		"name": WarbleFragment {
+			"error": Object {},
+			"invalid": false,
+			"valid": true,
+			"value": "Diego"
+		},
+		"surname": WarbleFragment {
+			"error": Object {},
+			"invalid": false,
+			"valid": true,
+			"value": "Lopes Lima"
+		}
+	},
+	"valid": false
+}
+```
 
-data.extend({'birthDate': '1993-03-27T03:00:00.000Z'}); // {'name': 'Diego', 'surname': 'Lopes Lima', 'age': 23, 'birthDate': '1993-03-27T03:00:00.000Z'}
+Validating a single data:
 
-data.isolate('name', 'surname'); // {'name': 'Diego', 'surname': 'Lopes Lima'}
+```javascript
+console.log(warble.validate(data.name, {
+	'required': true,
+	'minlength': 3
+}));
+```
 
-data.get('name'); // 'Diego'
+Return:
 
-data.set('name', 'Gustavo'); // {'name': 'Gustavo', 'surname': 'Lopes Lima', 'age': 23}
+```javascript
+WarbleFragment {
+	"error": Object {},
+	"invalid": false,
+	"valid": true,
+	"value": "Diego"
+}
+```
+
+Getting a data type:
+
+```javascript
+console.log(warble.type([]));
+```
+
+Return:
+
+```javascript
+"array"
 ```
 
 ## Changelog
