@@ -25,7 +25,7 @@ warble.isHooks.gmail = function(value) {
 
 };
 
-let
+var
 
 	schema = warble.model({
 		'name': {
