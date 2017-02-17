@@ -1,18 +1,14 @@
 {
 
-	'use strict';
-
 	let
 
 		objectTypes = ['Boolean', 'Number', 'String', 'Function', 'Array', 'Date', 'RegExp', 'Object', 'Error', 'Symbol'],
 
-		typesReference = {},
-
-		toString = typesReference.toString;
+		typesReference = {};
 
 	for (let index = 0, size = objectTypes.length; index < size; index++)
 
-		typesReference['[object ' + objectTypes[index] + ']'] = objectTypes[index].toLowerCase();
+		typesReference[`[object ${objectTypes[index]}]`] = objectTypes[index].toLowerCase();
 
 	class WarbleCore {
 
@@ -65,7 +61,7 @@
 			}
 		};
 
-		type = (value) => value === null ? 'null' : (typeof value === 'object' || typeof value === 'function' ? typesReference[toString.call(value)] || 'object' : typeof value);
+		type = (value) => value === null ? 'null' : (typeof value === 'object' || typeof value === 'function' ? typesReference[typesReference.toString.call(value)] || 'object' : typeof value);
 
 		is = (value, type) => this.isHooks.hasOwnProperty(type) ? !!this.isHooks[type](value) : this.type(value) === type;
 
@@ -103,7 +99,7 @@
 
 					for (let index = 0, size = response.length; index < size; index++)
 
-						this.error[name + ':' + response[index]] = true;
+						this.error[`${name}:${response[index]}`] = true;
 
 			} else
 
@@ -136,7 +132,8 @@
 				let
 
 					response = {
-						'data': {},
+						'results': {},
+						'data': data,
 						'valid': true,
 						'invalid': false
 					};
@@ -147,11 +144,9 @@
 
 					if (this.model.hasOwnProperty(index) && typeof this.model[index] === 'object')
 
-						for (let validation in this.model[index]) {
+						for (let validation in this.model[index])
 
-							let current = value.validate(validation, this.model[index][validation]);
-
-							if (current.invalid) {
+							if (value.validate(validation, this.model[index][validation]).invalid) {
 
 								response.valid = false;
 
@@ -159,9 +154,7 @@
 
 							}
 
-						}
-
-					response.data[index] = value;
+					response.results[index] = value;
 
 				}
 
@@ -202,44 +195,3 @@
 	var warble = new Warble;
 
 };
-
-//
-
-warble.isHooks.gmail = function(value) {
-
-	return /\@gmail\.com$/i.test(value);
-
-};
-
-let
-
-	schema = warble.model({
-		'name': {
-			'required': true,
-			'minlength': 3
-		},
-		'surname': {
-			'required': true,
-			'minlength': 3
-		},
-		'age': {
-			'required': true,
-			'min': 18
-		},
-		'email': {
-			'is': ['email', 'gmail']
-		}
-	}),
-
-	data = {
-		'name': 'Diego',
-		'surname': 'Lopes Lima',
-		'age': 23,
-		'email': 'web.diego.lima@yahoo.com'
-	};
-
-console.log(schema.validate(data));
-
-console.log(warble.validate(data.name, schema.model.name));
-
-console.log(warble.type([]));
