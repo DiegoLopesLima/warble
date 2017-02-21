@@ -10,60 +10,71 @@
 
 		typesReference[`[object ${objectTypes[index]}]`] = objectTypes[index].toLowerCase();
 
+	const
+
+		// https://www.w3.org/TR/html5/forms.html#e-mail-state-(type=email)
+		reEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
 	class WarbleCore {
 
-		re = {
-			// https://www.w3.org/TR/html5/forms.html#e-mail-state-(type=email)
-			'email': /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
-			'integer': /^\d+$/
-		};
+		constructor() {
 
-		isHooks = {
-			emptyObject(object) {
+			this.hooks = {
+				is: {
+					emptyObject(object) {
 
-				for (let index in object)
+						for (let index in object)
 
-					return false;
+							return false;
 
-				return true;
+						return true;
 
-			},
-			email: (value) => this.re.email.test(value),
-			integer: (value) => this.re.integer.test(value)
-		};
+					},
+					email: (value) => reEmail.test(value)
+				},
+				validate: {
+					required: (value, isRequired) => isRequired ? value !== undefined : true,
+					pattern: (value, pattern) => (typeof pattern === 'object' && typeof pattern.test === 'function' ? pattern : new RegExp(pattern)).test(value),
+					min: (value, min = 0) => (Number(value) || 0) >= (Number(min) || 0),
+					max: (value, max = Infinity) => (Number(value) || 0) <= (Number(max) || 0),
+					minlength: (value, min = 0) => typeof value === 'string' ? value.length >= (Number(min) || 0) : false,
+					maxlength: (value, max = Infinity) => typeof value === 'string' ? value.length <= (Number(max) || 0) : false,
+					type: (value, type) => core.type(value) === type,
+					is(value, types) {
 
-		validateHooks = {
-			required: (value, isRequired) => isRequired ? value !== undefined : true,
-			pattern: (value, pattern) => (typeof pattern === 'object' && typeof pattern.test === 'function' ? pattern : new RegExp(pattern)).test(value),
-			min: (value, min = 0) => (Number(value) || 0) >= (Number(min) || 0),
-			max: (value, max = Infinity) => (Number(value) || 0) <= (Number(max) || 0),
-			minlength: (value, min = 0) => typeof value === 'string' ? value.length >= (Number(min) || 0) : false,
-			maxlength: (value, max = Infinity) => typeof value === 'string' ? value.length <= (Number(max) || 0) : false,
-			type: (value, type) => core.type(value) === type,
-			is(value, types) {
+						var response = [];
 
-				var response = [];
+						if (core.is(types, 'array')) {
 
-				if (core.is(types, 'array')) {
+							for (let index = 0, size = types.length; index < size; index++)
 
-					for (let index = 0, size = types.length; index < size; index++)
+								if (!core.is(value, types[index]))
 
-						if (!core.is(value, types[index]))
+									response.push(types[index]);
 
-							response.push(types[index]);
+						} else if (!core.is(value, types))
 
-				} else if (!core.is(value, types))
+							response.push(types);
 
-					response.push(types);
+						return response.length > 0 ? response : true;
 
-				return response.length > 0 ? response : true;
+					}
+				}
+			};
 
-			}
-		};
+		}
 
-		type = (value) => value === null ? 'null' : (typeof value === 'object' || typeof value === 'function' ? typesReference[typesReference.toString.call(value)] || 'object' : typeof value);
+		type(value) {
 
-		is = (value, type) => this.isHooks.hasOwnProperty(type) ? !!this.isHooks[type](value) : this.type(value) === type;
+			return value === null ? 'null' : (typeof value === 'object' || typeof value === 'function' ? typesReference[typesReference.toString.call(value)] || 'object' : typeof value);
+
+		}
+
+		is(value, type) {
+
+			return this.hooks.is.hasOwnProperty(type) ? !!this.hooks.is[type](value) : this.type(value) === type;
+
+		}
 
 	}
 
@@ -85,7 +96,7 @@
 
 		validate(name, param) {
 
-			var response = core.validateHooks.hasOwnProperty(name) ? core.validateHooks[name](this.value, param) : true;
+			var response = core.hooks.validate.hasOwnProperty(name) ? core.hooks.validate[name](this.value, param) : true;
 
 			if (!response || core.is(response, 'array')) {
 
@@ -132,10 +143,10 @@
 				let
 
 					response = {
-						'results': {},
-						'data': data,
-						'valid': true,
-						'invalid': false
+						results: {},
+						data: data,
+						valid: true,
+						invalid: false
 					};
 
 				for (let index in this.model) {
@@ -170,7 +181,11 @@
 
 	class Warble extends WarbleCore {
 
-		model = (model) => new WarbleModel(model);
+		model(model) {
+
+			return new WarbleModel(model);
+
+		}
 
 		validate(value, options) {
 
