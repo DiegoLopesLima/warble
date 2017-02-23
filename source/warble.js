@@ -13,7 +13,15 @@
 	const
 
 		// https://www.w3.org/TR/html5/forms.html#e-mail-state-(type=email)
-		reEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+		reEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+
+		reNumeric = /^\-?\d+(?:\.\d+)?$/,
+
+		reInteger = /^\-?\d+$/,
+
+		rePositive = /^\d+(?:\.\d+)?$/,
+
+		reNegative = /^\-\d+(?:\.\d+)?$/;
 
 	class WarbleCore {
 
@@ -30,7 +38,13 @@
 						return true;
 
 					},
-					email: (value) => reEmail.test(value)
+					email: (value) => reEmail.test(value),
+					numeric: (value) => reNumeric.test(value),
+					integer: (value) => reInteger.test(value),
+					positive: (value) => rePositive.test(value),
+					negative: (value) => reNegative.test(value),
+					even: (value) => (Number(value) % 2) === 0,
+					odd: (value) => (Number(value) % 2) > 0
 				},
 				validate: {
 					required: (value, isRequired) => isRequired ? value !== undefined : true,
@@ -57,6 +71,14 @@
 							response.push(types);
 
 						return response.length > 0 ? response : true;
+
+					},
+					range: (value, range) => (core.is(range, 'array') && range.length > 1) ? Number(value) >= Number(range[0]) && Number(value) <= Number(range[1]) : false,
+					equal(value, to)  {
+
+						var parent = this.parent;
+
+						return typeof parent === 'object' && parent.hasOwnProperty(to) ? value === parent[to] : false;
 
 					}
 				}
@@ -96,7 +118,7 @@
 
 		validate(name, param) {
 
-			var response = core.hooks.validate.hasOwnProperty(name) ? core.hooks.validate[name](this.value, param) : true;
+			var response = core.hooks.validate.hasOwnProperty(name) ? core.hooks.validate[name].call(this, this.value, param) : true;
 
 			if (!response || core.is(response, 'array')) {
 
@@ -115,6 +137,14 @@
 			} else
 
 				delete this.error[name];
+
+			return this;
+
+		}
+
+		setParent(parent) {
+
+			this.parent = parent;
 
 			return this;
 
@@ -152,6 +182,8 @@
 				for (let index in this.model) {
 
 					let value = new WarbleFragment(data[index]);
+
+					value.setParent(data);
 
 					if (this.model.hasOwnProperty(index) && typeof this.model[index] === 'object')
 
