@@ -76,9 +76,7 @@
 					range: (value, range) => (core.is(range, 'array') && range.length > 1) ? Number(value) >= Number(range[0]) && Number(value) <= Number(range[1]) : false,
 					equal(value, to)  {
 
-						var parent = this.parent;
-
-						return typeof parent === 'object' && parent.hasOwnProperty(to) ? value === parent[to] : false;
+						return typeof this === 'object' && this.hasOwnProperty(to) ? value === this[to] : false;
 
 					}
 				}
@@ -94,7 +92,9 @@
 
 		is(value, type) {
 
-			return this.hooks.is.hasOwnProperty(type) ? !!this.hooks.is[type](value) : this.type(value) === type;
+			var {hooks} = this;
+
+			return hooks.is.hasOwnProperty(type) ? !!hooks.is[type](value) : this.type(value) === type;
 
 		}
 
@@ -116,9 +116,9 @@
 
 		}
 
-		validate(name, param) {
+		validate(name, param, parent) {
 
-			var response = core.hooks.validate.hasOwnProperty(name) ? core.hooks.validate[name].call(this, this.value, param) : true;
+			var response = core.hooks.validate.hasOwnProperty(name) ? core.hooks.validate[name].call(parent, this.value, param) : true;
 
 			if (!response || core.is(response, 'array')) {
 
@@ -137,14 +137,6 @@
 			} else
 
 				delete this.error[name];
-
-			return this;
-
-		}
-
-		setParent(parent) {
-
-			this.parent = parent;
 
 			return this;
 
@@ -183,19 +175,13 @@
 
 					let value = new WarbleFragment(data[index]);
 
-					value.setParent(data);
-
 					if (this.model.hasOwnProperty(index) && typeof this.model[index] === 'object')
 
 						for (let validation in this.model[index])
 
-							if (value.validate(validation, this.model[index][validation]).invalid) {
+							if (value.validate(validation, this.model[index][validation], data).invalid)
 
-								response.valid = false;
-
-								response.invalid = true;
-
-							}
+								[response.valid, response.invalid] = [false, true];
 
 					response.results[index] = value;
 
