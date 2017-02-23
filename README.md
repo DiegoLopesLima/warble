@@ -82,14 +82,6 @@ Object {
 		"age": WarbleFragment {
 			"error": Object {},
 			"invalid": false,
-			"parent": Object {
-				"age": 23,
-				"email": "web.diego.lima@yahoo.com",
-				"name": "Diego",
-				"password": "a1b2c3",
-				"passwordConfirmation": "1a2b3c",
-				"surname": "Lopes Lima"
-			},
 			"valid": true,
 			"value": 23
 		},
@@ -99,42 +91,18 @@ Object {
 				"is:gmail": true
 			},
 			"invalid": true,
-			"parent": Object {
-				"age": 23,
-				"email": "web.diego.lima@yahoo.com",
-				"name": "Diego",
-				"password": "a1b2c3",
-				"passwordConfirmation": "1a2b3c",
-				"surname": "Lopes Lima"
-			},
 			"valid": false,
 			"value": "web.diego.lima@yahoo.com"
 		},
 		"name": WarbleFragment {
 			"error": Object {},
 			"invalid": false,
-			"parent": Object {
-				"age": 23,
-				"email": "web.diego.lima@yahoo.com",
-				"name": "Diego",
-				"password": "a1b2c3",
-				"passwordConfirmation": "1a2b3c",
-				"surname": "Lopes Lima"
-			},
 			"valid": true,
 			"value": "Diego"
 		},
 		"password": WarbleFragment {
 			"error": Object {},
 			"invalid": false,
-			"parent": Object {
-				"age": 23,
-				"email": "web.diego.lima@yahoo.com",
-				"name": "Diego",
-				"password": "a1b2c3",
-				"passwordConfirmation": "1a2b3c",
-				"surname": "Lopes Lima"
-			},
 			"valid": true,
 			"value": "a1b2c3"
 		},
@@ -143,28 +111,12 @@ Object {
 				"equal": true
 			},
 			"invalid": true,
-			"parent": Object {
-				"age": 23,
-				"email": "web.diego.lima@yahoo.com",
-				"name": "Diego",
-				"password": "a1b2c3",
-				"passwordConfirmation": "1a2b3c",
-				"surname": "Lopes Lima"
-			},
 			"valid": false,
 			"value": "1a2b3c"
 		},
 		"surname": WarbleFragment {
 			"error": Object {},
 			"invalid": false,
-			"parent": Object {
-				"age": 23,
-				"email": "web.diego.lima@yahoo.com",
-				"name": "Diego",
-				"password": "a1b2c3",
-				"passwordConfirmation": "1a2b3c",
-				"surname": "Lopes Lima"
-			},
 			"valid": true,
 			"value": "Lopes Lima"
 		}
