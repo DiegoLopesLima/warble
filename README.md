@@ -19,11 +19,7 @@ Install with [Bower](https://bower.io/): `bower install warble#1.0.0-alpha.1`
 ## Usage
 
 ```javascript
-warble.hooks.is.gmail = function(value) {
-
-	return /\@gmail\.com$/i.test(value);
-
-};
+warble.hooks.is.gmail = (value) => /\@gmail\.com$/i.test(value);
 
 let
 
@@ -38,10 +34,18 @@ let
 		},
 		age: {
 			required: true,
-			min: 18
+			min: 18,
+			is: ['integer', 'positive']
 		},
 		email: {
 			is: ['email', 'gmail']
+		},
+		password: {
+			required: true
+		},
+		passwordConfirmation: {
+			required: true,
+			equal: 'password'
 		}
 	}),
 
@@ -49,7 +53,9 @@ let
 		name: 'Diego',
 		surname: 'Lopes Lima',
 		age: 23,
-		email: 'web.diego.lima@yahoo.com'
+		email: 'web.diego.lima@yahoo.com',
+		password: 'a1b2c3',
+		passwordConfirmation: '1a2b3c'
 	};
 ```
 
@@ -67,6 +73,8 @@ Object {
 		"age": 23,
 		"email": "web.diego.lima@yahoo.com",
 		"name": "Diego",
+		"password": "a1b2c3",
+		"passwordConfirmation": "1a2b3c",
 		"surname": "Lopes Lima"
 	},
 	"invalid": true,
@@ -74,6 +82,14 @@ Object {
 		"age": WarbleFragment {
 			"error": Object {},
 			"invalid": false,
+			"parent": Object {
+				"age": 23,
+				"email": "web.diego.lima@yahoo.com",
+				"name": "Diego",
+				"password": "a1b2c3",
+				"passwordConfirmation": "1a2b3c",
+				"surname": "Lopes Lima"
+			},
 			"valid": true,
 			"value": 23
 		},
@@ -83,18 +99,72 @@ Object {
 				"is:gmail": true
 			},
 			"invalid": true,
+			"parent": Object {
+				"age": 23,
+				"email": "web.diego.lima@yahoo.com",
+				"name": "Diego",
+				"password": "a1b2c3",
+				"passwordConfirmation": "1a2b3c",
+				"surname": "Lopes Lima"
+			},
 			"valid": false,
 			"value": "web.diego.lima@yahoo.com"
 		},
 		"name": WarbleFragment {
 			"error": Object {},
 			"invalid": false,
+			"parent": Object {
+				"age": 23,
+				"email": "web.diego.lima@yahoo.com",
+				"name": "Diego",
+				"password": "a1b2c3",
+				"passwordConfirmation": "1a2b3c",
+				"surname": "Lopes Lima"
+			},
 			"valid": true,
 			"value": "Diego"
+		},
+		"password": WarbleFragment {
+			"error": Object {},
+			"invalid": false,
+			"parent": Object {
+				"age": 23,
+				"email": "web.diego.lima@yahoo.com",
+				"name": "Diego",
+				"password": "a1b2c3",
+				"passwordConfirmation": "1a2b3c",
+				"surname": "Lopes Lima"
+			},
+			"valid": true,
+			"value": "a1b2c3"
+		},
+		"passwordConfirmation": WarbleFragment {
+			"error": Object {
+				"equal": true
+			},
+			"invalid": true,
+			"parent": Object {
+				"age": 23,
+				"email": "web.diego.lima@yahoo.com",
+				"name": "Diego",
+				"password": "a1b2c3",
+				"passwordConfirmation": "1a2b3c",
+				"surname": "Lopes Lima"
+			},
+			"valid": false,
+			"value": "1a2b3c"
 		},
 		"surname": WarbleFragment {
 			"error": Object {},
 			"invalid": false,
+			"parent": Object {
+				"age": 23,
+				"email": "web.diego.lima@yahoo.com",
+				"name": "Diego",
+				"password": "a1b2c3",
+				"passwordConfirmation": "1a2b3c",
+				"surname": "Lopes Lima"
+			},
 			"valid": true,
 			"value": "Lopes Lima"
 		}
