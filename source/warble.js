@@ -118,7 +118,7 @@
 
 		validate(name, param, parent) {
 
-			var response = core.hooks.validate.hasOwnProperty(name) ? core.hooks.validate[name].call(parent, this.value, param) : true;
+			var response = typeof core.hooks.validate[name] === 'function' ? core.hooks.validate[name].call(parent, this.value, param) : true;
 
 			if (!response || core.is(response, 'array')) {
 
@@ -175,7 +175,7 @@
 
 					let value = new WarbleFragment(data[index]);
 
-					if (this.model.hasOwnProperty(index) && typeof this.model[index] === 'object')
+					if (typeof this.model[index] === 'object')
 
 						for (let validation in this.model[index])
 
