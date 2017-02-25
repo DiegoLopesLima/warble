@@ -5,12 +5,12 @@
   "main": "warble.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/DigitalEverest/warble.git"
+    "url": "https://github.com/DiegoLopesLima/warble.git"
   },
   "author": "Diego Lopes Lima",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/DigitalEverest/warble/issues"
+    "url": "https://github.com/DiegoLopesLima/warble/issues"
   },
-  "homepage": "https://github.com/DigitalEverest/warble#readme"
+  "homepage": "https://github.com/DiegoLopesLima/warble#readme"
 }

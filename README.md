@@ -157,7 +157,7 @@ Return:
 
 ## Changelog
 
-Previous [releases](https://github.com/Tradusy/warble/releases) and their documentation are also available for download.
+Previous [releases](https://github.com/DiegoLopesLima/warble/releases) and their documentation are also available for download.
 
 ## Contributing
 
@@ -171,4 +171,4 @@ Created and maintained by [Diego Lopes Lima](https://github.com/DiegoLopesLima).
 
 Code and documentation copyright © 2016 Warble.
 
-All content of this repository is licensed under the [MIT License](https://github.com/Tradusy/Warble/blob/master/LICENSE.md).
+All content of this repository is licensed under the [MIT License](https://github.com/DiegoLopesLima/warble/blob/master/LICENSE.md).
