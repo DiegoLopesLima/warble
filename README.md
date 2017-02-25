@@ -1,6 +1,6 @@
 # Warble
 
-Warble is a client side and server side library to quickly handle your data writing less and doing more.
+A minimalist data validation library.
 
 ## Table of contents
 
@@ -13,8 +13,6 @@ Warble is a client side and server side library to quickly handle your data writ
 ## Instalation
 
 Install with [NPM](https://www.npmjs.com/): `npm install warble@1.0.0-alpha.1`
-
-Install with [Bower](https://bower.io/): `bower install warble#1.0.0-alpha.1`
 
 ## Usage
 

@@ -10,19 +10,6 @@
 
 		typesReference[`[object ${objectTypes[index]}]`] = objectTypes[index].toLowerCase();
 
-	const
-
-		// https://www.w3.org/TR/html5/forms.html#e-mail-state-(type=email)
-		reEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
-
-		reNumeric = /^\-?\d+(?:\.\d+)?$/,
-
-		reInteger = /^\-?\d+$/,
-
-		rePositive = /^\d+(?:\.\d+)?$/,
-
-		reNegative = /^\-\d+(?:\.\d+)?$/;
-
 	class WarbleCore {
 
 		constructor() {
@@ -38,11 +25,12 @@
 						return true;
 
 					},
-					email: (value) => reEmail.test(value),
-					numeric: (value) => reNumeric.test(value),
-					integer: (value) => reInteger.test(value),
-					positive: (value) => rePositive.test(value),
-					negative: (value) => reNegative.test(value),
+					// https://www.w3.org/TR/html5/forms.html#e-mail-state-(type=email)
+					email: (value) => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(value),
+					numeric: (value) => /^\-?\d+(?:\.\d+)?$/.test(value),
+					integer: (value) => /^\-?\d+$/.test(value),
+					positive: (value) => /^\d+(?:\.\d+)?$/.test(value),
+					negative: (value) => /^\-\d+(?:\.\d+)?$/.test(value),
 					even: (value) => (Number(value) % 2) === 0,
 					odd: (value) => (Number(value) % 2) > 0
 				},
