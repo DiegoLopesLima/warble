@@ -12,5 +12,6 @@
   "bugs": {
     "url": "https://github.com/DiegoLopesLima/warble/issues"
   },
-  "homepage": "https://github.com/DiegoLopesLima/warble#readme"
+  "homepage": "https://github.com/DiegoLopesLima/warble#readme",
+  "main": "warble.js"
 }
