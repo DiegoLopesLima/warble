@@ -6,13 +6,12 @@ A minimalist validation library for client side and server side.
 
 - [Instalation](#instalation)
 - [Usage](#usage)
-- [Contributing](#contributing)
 - [Credits](#credits)
 - [License](#license)
 
 ## Instalation
 
-Install with [NPM](https://www.npmjs.com/): `npm install warble@1.0.0-alpha.1`
+Install with [NPM](https://www.npmjs.com/package/warble): `npm install warble@1.0.0-alpha.1`
 
 ## Usage
 
@@ -63,7 +62,7 @@ Validating object:
 console.log(schema.validate(data));
 ```
 
-Return:
+Returns:
 
 ```javascript
 Object {
@@ -132,7 +131,7 @@ console.log(warble.validate(data.name, {
 }));
 ```
 
-Return:
+Returns:
 
 ```javascript
 WarbleFragment {
@@ -149,7 +148,7 @@ Getting a data type:
 console.log(warble.type([]));
 ```
 
-Return:
+Returns:
 
 ```javascript
 "array"
@@ -158,10 +157,6 @@ Return:
 ## Changelog
 
 Previous [releases](https://github.com/DiegoLopesLima/warble/releases) and their documentation are also available for download.
-
-## Contributing
-
-Please read [contributing]() documentation.
 
 ## Credits
 
