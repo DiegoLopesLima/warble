@@ -1,6 +1,6 @@
 # Warble
 
-A minimalist data validation library.
+A minimalist validation library for client side and server side.
 
 ## Table of contents
 
