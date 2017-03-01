@@ -1,7 +1,7 @@
 {
   "name": "warble",
   "version": "1.0.0-alpha",
-  "description": "A minimalist data validation library.",
+  "description": "A minimalist validation library for client side and server side.",
   "main": "warble.js",
   "repository": {
     "type": "git",
