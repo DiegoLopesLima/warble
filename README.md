@@ -11,7 +11,7 @@ A minimalist validation library for client side and server side.
 
 ## Instalation
 
-Install with [NPM](https://www.npmjs.com/package/warble): `npm install warble@1.0.0-alpha.1`
+Install with [NPM](https://www.npmjs.com/package/warble): `npm install warble@1.0.0-alpha`
 
 ## Usage
 
