@@ -16,15 +16,6 @@
 
 			this.hooks = {
 				is: {
-					emptyObject(object) {
-
-						for (let index in object)
-
-							return false;
-
-						return true;
-
-					},
 					// https://www.w3.org/TR/html5/forms.html#e-mail-state-(type=email)
 					email: (value) => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(value),
 					numeric: (value) => /^\-?\d+(?:\.\d+)?$/.test(value),
@@ -80,7 +71,7 @@
 
 		is(value, type) {
 
-			var {hooks} = this;
+			var { hooks } = this;
 
 			return hooks.is.hasOwnProperty(type) ? !!hooks.is[type](value) : this.type(value) === type;
 
