@@ -73,7 +73,7 @@
 
 			var { hooks } = this;
 
-			return hooks.is.hasOwnProperty(type) ? !!hooks.is[type](value) : this.type(value) === type;
+			return typeof type === 'function' ? !!type(value) : (hooks.is.hasOwnProperty(type) ? !!hooks.is[type](value) : this.type(value) === type);
 
 		}
 
