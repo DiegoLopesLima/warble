@@ -1,6 +1,6 @@
 # Warble
 
-A minimalist validation library for client side and server side.
+A minimalist validation library for client-side and server-side.
 
 ## Table of contents
 
@@ -15,12 +15,18 @@ Install with [NPM](https://www.npmjs.com/package/warble): `npm install warble`
 
 ## Usage
 
+### Creating model
+
+#### Source
+
 ```javascript
+// Create an extension to verify if value is a Gmail address.
 warble.hooks.is.gmail = (value) => /\@gmail\.com$/i.test(value);
 
 let
 
-	schema = warble.model({
+	// Create a data model:
+	model = warble.model({
 		name: {
 			required: true,
 			minlength: 3
@@ -46,6 +52,7 @@ let
 		}
 	}),
 
+	// Data example:
 	data = {
 		name: 'Diego',
 		surname: 'Lopes Lima',
@@ -54,15 +61,12 @@ let
 		password: 'a1b2c3',
 		passwordConfirmation: '1a2b3c'
 	};
+
+// Validating data:
+model.validate(data);
 ```
 
-Validating object:
-
-```javascript
-console.log(schema.validate(data));
-```
-
-Returns:
+#### Output
 
 ```javascript
 Object {
@@ -122,16 +126,18 @@ Object {
 }
 ```
 
-Validating a single data:
+### Validating a single data:
+
+#### Source
 
 ```javascript
-console.log(warble.validate(data.name, {
+warble.validate(data.name, {
 	'required': true,
 	'minlength': 3
-}));
+});
 ```
 
-Returns:
+#### Output
 
 ```javascript
 WarbleFragment {
@@ -142,13 +148,14 @@ WarbleFragment {
 }
 ```
 
-Getting a data type:
+### Getting data type:
 
+#### Source
 ```javascript
-console.log(warble.type([]));
+warble.type([]);
 ```
 
-Returns:
+#### Output
 
 ```javascript
 "array"
