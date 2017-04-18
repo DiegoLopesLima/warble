@@ -1,8 +1,22 @@
 {
   "name": "warble",
-  "version": "1.0.0-alpha",
-  "description": "A minimalist validation library for client side and server side.",
+  "version": "1.0.0-alpha.2",
+  "description": "A minimalist validation library for client-side and server-side.",
   "main": "warble.js",
+  "keywords": [
+    "data",
+    "validation",
+    "library",
+    "client-side",
+    "server-side",
+    "validate",
+    "validator",
+    "javascript",
+    "node",
+    "npm",
+    "package",
+    "object"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/DiegoLopesLima/warble.git"

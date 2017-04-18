@@ -28,7 +28,7 @@
 				validate: {
 					required: (value, isRequired) => isRequired ? value !== undefined : true,
 					pattern: (value, pattern) => (typeof pattern === 'object' && typeof pattern.test === 'function' ? pattern : new RegExp(pattern)).test(value),
-					min: (value, min = 0) => (Number(value) || 0) >= (Number(min) || 0),
+					min: (value, min = -Infinity) => (Number(value) || 0) >= (Number(min) || 0),
 					max: (value, max = Infinity) => (Number(value) || 0) <= (Number(max) || 0),
 					minlength: (value, min = 0) => typeof value === 'string' ? value.length >= (Number(min) || 0) : false,
 					maxlength: (value, max = Infinity) => typeof value === 'string' ? value.length <= (Number(max) || 0) : false,
