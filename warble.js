@@ -10,6 +10,34 @@
 
 		typesReference[`[object ${objectTypes[index]}]`] = objectTypes[index].toLowerCase();
 
+	class WarbleErrorList {
+
+		constructor() {
+
+			this.errors = [];
+
+		}
+
+		addError(error) {
+
+			if (typeof error === 'string')
+
+				this.errors.push(error);
+
+			else if (typeof error === 'function' && error.name)
+
+				this.errors.push(error.name);
+
+		}
+
+		hasErrors() {
+
+			return this.errors.length > 0;
+
+		}
+
+	}
+
 	class WarbleCore {
 
 		constructor() {
@@ -35,7 +63,7 @@
 					type: (value, type) => core.type(value) === type,
 					is(value, types) {
 
-						var response = [];
+						var errorList = core.createErrorList();
 
 						if (core.is(types, 'array')) {
 
@@ -43,13 +71,13 @@
 
 								if (!core.is(value, types[index]))
 
-									response.push(types[index]);
+									errorList.addError(types[index]);
 
 						} else if (!core.is(value, types))
 
-							response.push(types);
+							errorList.addError(types);
 
-						return response.length > 0 ? response : true;
+						return errorList.hasErrors() ? errorList : true;
 
 					},
 					range: (value, range) => (core.is(range, 'array') && range.length > 1) ? Number(value) >= Number(range[0]) && Number(value) <= Number(range[1]) : false,
@@ -77,6 +105,12 @@
 
 		}
 
+		createErrorList() {
+
+			return new WarbleErrorList;
+
+		}
+
 	}
 
 	let core = new WarbleCore;
@@ -99,7 +133,7 @@
 
 			var response = typeof core.hooks.validate[name] === 'function' ? core.hooks.validate[name].call(parent, this.value, param) : true;
 
-			if (!response || core.is(response, 'array')) {
+			if (!response || response instanceof WarbleErrorList) {
 
 				this.valid = false;
 
@@ -107,11 +141,13 @@
 
 				this.error[name] = true;
 
-				if (core.is(response, 'array'))
+				if (response instanceof WarbleErrorList)
 
-					for (let index = 0, size = response.length; index < size; index++)
+					for (let index = 0, size = response.errors.length; index < size; index++)
 
-						this.error[`${name}:${response[index]}`] = true;
+						if (response.errors[index] !== name)
+
+							this.error[`${name}:${response.errors[index]}`] = true;
 
 			} else
 
