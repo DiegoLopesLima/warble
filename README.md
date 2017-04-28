@@ -51,6 +51,9 @@ let
 		passwordConfirmation: {
 			required: true,
 			equal: 'password'
+		},
+		gender: {
+			options: ['male', 'female']
 		}
 	}),
 
