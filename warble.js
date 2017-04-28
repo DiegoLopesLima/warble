@@ -85,7 +85,22 @@
 
 						return typeof this === 'object' && this.hasOwnProperty(to) ? value === this[to] : false;
 
-					}
+					},
+					conditional: (value, conditional) => conditional(value),
+					options(value, options) {
+
+						if (core.is(options, 'array'))
+
+							for (let index = 0, size = options.length; index < size; index++)
+
+								if (value === options[index])
+
+									return true;
+
+						return false;
+
+					},
+					instance: (value, object) => value instanceof object
 				}
 			};
 
