@@ -2,7 +2,7 @@
 
 A minimalist validation library for client-side and server-side.
 
-> To validate forms use [Alberi](https://github.com/DiegoLopesLima/alberi). A minimalist form validation library that uses Warble as dependence.
+> See the [documentation](https://github.com/DiegoLopesLima/warble/wiki/Documentation) for more information.
 
 ## Table of contents
 
@@ -13,17 +13,21 @@ A minimalist validation library for client-side and server-side.
 
 ## Instalation
 
-Install with [NPM](https://www.npmjs.com/package/warble): `npm install --save warble`
+### Install with [NPM](https://www.npmjs.com/package/warble)
+
+```
+npm install --save warble
+```
 
 ## Usage
 
-### Creating model
+### Creating a model
 
 #### Source
 
 ```javascript
 // Create an extension to verify if value is a Gmail address.
-warble.hooks.is.gmail = (value) => /\@gmail\.com$/i.test(value);
+warble.fn.is.gmail = (value) => /\@gmail\.com$/i.test(value);
 
 let
 
@@ -53,7 +57,7 @@ let
 			equal: 'password'
 		},
 		gender: {
-			options: ['male', 'female']
+			options: ['male', 'female', 'other']
 		}
 	}),
 
@@ -64,7 +68,8 @@ let
 		age: 23,
 		email: 'web.diego.lima@yahoo.com',
 		password: 'a1b2c3',
-		passwordConfirmation: '1a2b3c'
+		passwordConfirmation: '1a2b3c',
+		gender: 'male'
 	};
 
 // Validating data:
@@ -99,6 +104,12 @@ Object {
 			"invalid": true,
 			"valid": false,
 			"value": "web.diego.lima@yahoo.com"
+		},
+		"gender": WarbleFragment {
+			"error": Object {},
+			"invalid": false,
+			"valid": true,
+			"value": "male"
 		},
 		"name": WarbleFragment {
 			"error": Object {},
@@ -176,6 +187,6 @@ Created and maintained by [Diego Lopes Lima](https://github.com/DiegoLopesLima).
 
 ## License
 
-Code and documentation copyright © 2016 Warble.
+Code and [documentation](https://github.com/DiegoLopesLima/warble/wiki/Documentation) copyright © 2017 Warble.
 
 All content of this repository is licensed under the [MIT License](https://github.com/DiegoLopesLima/warble/blob/master/LICENSE.md).

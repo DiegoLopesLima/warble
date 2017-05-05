@@ -10,6 +10,12 @@
 
 		typesReference[`[object ${objectTypes[index]}]`] = objectTypes[index].toLowerCase();
 
+	function error(value) {
+
+		return throw new Error(value);
+
+	}
+
 	class WarbleErrorList {
 
 		constructor() {
@@ -42,7 +48,7 @@
 
 		constructor() {
 
-			this.hooks = {
+			this.fn = {
 				is: {
 					// https://www.w3.org/TR/html5/forms.html#e-mail-state-(type=email)
 					email: (value) => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(value),
@@ -55,7 +61,7 @@
 				},
 				validate: {
 					required: (value, isRequired) => isRequired ? value !== undefined : true,
-					pattern: (value, pattern) => (typeof pattern === 'object' && typeof pattern.test === 'function' ? pattern : new RegExp(pattern)).test(value),
+					pattern: (value, pattern) => (core.is(pattern, 'regexp') ? pattern : new RegExp(pattern)).test(value),
 					min: (value, min = -Infinity) => (Number(value) || 0) >= (Number(min) || 0),
 					max: (value, max = Infinity) => (Number(value) || 0) <= (Number(max) || 0),
 					minlength: (value, min = 0) => typeof value === 'string' ? value.length >= (Number(min) || 0) : false,
@@ -80,7 +86,7 @@
 						return errorList.hasErrors() ? errorList : true;
 
 					},
-					range: (value, range) => (core.is(range, 'array') && range.length > 1) ? Number(value) >= Number(range[0]) && Number(value) <= Number(range[1]) : false,
+					range: (value, range = [-Infinity, Infinity]) => (core.is(range, 'array') && range.length > 1) ? Number(value) >= Number(range[0]) && Number(value) <= Number(range[1]) : false,
 					equal(value, to)  {
 
 						return typeof this === 'object' && this.hasOwnProperty(to) ? value === this[to] : false;
@@ -114,9 +120,9 @@
 
 		is(value, type) {
 
-			var { hooks } = this;
+			var { fn } = this;
 
-			return typeof type === 'function' ? !!type(value) : (hooks.is.hasOwnProperty(type) ? !!hooks.is[type].call(this, value) : this.type(value) === type);
+			return typeof type === 'function' ? !!type(value) : (fn.is.hasOwnProperty(type) ? !!fn.is[type].call(this, value) : this.type(value) === type);
 
 		}
 
@@ -146,7 +152,7 @@
 
 		validate(name, param, parent) {
 
-			var response = typeof core.hooks.validate[name] === 'function' ? core.hooks.validate[name].call(parent, this.value, param) : true;
+			var response = typeof core.fn.validate[name] === 'function' ? core.fn.validate[name].call(parent, this.value, param) : true;
 
 			if (!response || response instanceof WarbleErrorList) {
 
@@ -184,7 +190,7 @@
 
 			else
 
-				throw new Error('WarbleModel expects an object.');
+				error('WarbleModel expects an object.');
 
 		}
 
@@ -196,9 +202,9 @@
 
 					response = {
 						results: {},
-						data: data,
 						valid: true,
-						invalid: false
+						invalid: false,
+						data: {}
 					};
 
 				for (let index in this.model) {
@@ -215,13 +221,15 @@
 
 					response.results[index] = value;
 
+					response.data[index] = value.value;
+
 				}
 
 				return response;
 
 			} else
 
-				throw new Error('WarbleModel.validate expects an object.');
+				error('WarbleModel.validate expects an object.');
 
 		}
 
@@ -249,7 +257,7 @@
 
 			} else
 
-				throw new Error('Warble.validate expects an object.');
+				error('Warble.validate expects an object.');
 
 		}
 
