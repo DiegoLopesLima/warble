@@ -12,7 +12,7 @@
 
 	function error(value) {
 
-		return throw new Error(value);
+		return new Error(value);
 
 	}
 
@@ -67,23 +67,12 @@
 					minlength: (value, min = 0) => typeof value === 'string' ? value.length >= (Number(min) || 0) : false,
 					maxlength: (value, max = Infinity) => typeof value === 'string' ? value.length <= (Number(max) || 0) : false,
 					type: (value, type) => core.type(value) === type,
+					is: (value, types) => core.is(value, types, true),
 					is(value, types) {
 
-						var errorList = core.createErrorList();
+						var errorList = core.is(value, types, true);
 
-						if (core.is(types, 'array')) {
-
-							for (let index = 0, size = types.length; index < size; index++)
-
-								if (!core.is(value, types[index]))
-
-									errorList.addError(types[index]);
-
-						} else if (!core.is(value, types))
-
-							errorList.addError(types);
-
-						return errorList.hasErrors() ? errorList : true;
+						return errorList.hasErrors() ? errorList : true
 
 					},
 					range: (value, range = [-Infinity, Infinity]) => (core.is(range, 'array') && range.length > 1) ? Number(value) >= Number(range[0]) && Number(value) <= Number(range[1]) : false,
@@ -118,11 +107,43 @@
 
 		}
 
-		is(value, type) {
+		is(value, types, getErrorList) {
 
-			var { fn } = this;
+			var
 
-			return typeof type === 'function' ? !!type(value) : (fn.is.hasOwnProperty(type) ? !!fn.is[type].call(this, value) : this.type(value) === type);
+				errorList = core.createErrorList(),
+
+				{ fn, type } = this;
+
+			if (type(types) === 'array') {
+
+				for (let index = 0, size = types.length; index < size; index++) {
+
+					let test = fn.is[types[index]];
+
+					if (typeof test === 'function') {
+
+						if (!test.call(this, value))
+
+							errorList.addError(types[index]);
+
+					} else if (!(type(value) === types[index]))
+
+						errorList.addError(types[index]);
+
+				}
+
+			} else if (typeof fn.is[types] === 'function') {
+
+				if (!fn.is[types].call(this, value))
+
+					errorList.addError(types);
+
+			} else if (!(type(value) === types))
+
+				errorList.addError(types);
+
+			return getErrorList ? errorList : !errorList.hasErrors();
 
 		}
 
@@ -190,7 +211,7 @@
 
 			else
 
-				error('WarbleModel expects an object.');
+				throw error('WarbleModel expects an object.');
 
 		}
 
@@ -229,7 +250,7 @@
 
 			} else
 
-				error('WarbleModel.validate expects an object.');
+				throw error('WarbleModel.validate expects an object.');
 
 		}
 
@@ -257,7 +278,7 @@
 
 			} else
 
-				error('Warble.validate expects an object.');
+				throw error('Warble.validate expects an object.');
 
 		}
 
