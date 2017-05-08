@@ -168,13 +168,30 @@ WarbleFragment {
 
 #### Source
 ```javascript
-warble.type([]);
+var value = [];
+
+warble.type(value);
 ```
 
 #### Output
 
 ```javascript
 "array"
+```
+
+### Testing data:
+
+#### Source
+```javascript
+var value = -1;
+
+warble.is(value, ['number', 'negative']);
+```
+
+#### Output
+
+```javascript
+"true"
 ```
 
 ## Changelog

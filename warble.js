@@ -67,7 +67,6 @@
 					minlength: (value, min = 0) => typeof value === 'string' ? value.length >= (Number(min) || 0) : false,
 					maxlength: (value, max = Infinity) => typeof value === 'string' ? value.length <= (Number(max) || 0) : false,
 					type: (value, type) => core.type(value) === type,
-					is: (value, types) => core.is(value, types, true),
 					is(value, types) {
 
 						var errorList = core.is(value, types, true);
@@ -111,7 +110,7 @@
 
 			var
 
-				errorList = core.createErrorList(),
+				errorList = this.createErrorList(),
 
 				{ fn, type } = this;
 
