@@ -1,6 +1,6 @@
 # Warble
 
-A minimalist validation library for client-side and server-side.
+A validation library for client-side and server-side.
 
 > See the [documentation](https://github.com/DiegoLopesLima/warble/wiki/Documentation) for more information.
 
@@ -168,7 +168,7 @@ WarbleFragment {
 
 #### Source
 ```javascript
-var value = [];
+var value = ['lorem', 'ipsum'];
 
 warble.type(value);
 ```
@@ -191,7 +191,7 @@ warble.is(value, ['number', 'negative']);
 #### Output
 
 ```javascript
-"true"
+true
 ```
 
 ## Changelog
@@ -204,6 +204,6 @@ Created and maintained by [Diego Lopes Lima](https://github.com/DiegoLopesLima).
 
 ## License
 
-Code and [documentation](https://github.com/DiegoLopesLima/warble/wiki/Documentation) copyright © 2017 Warble.
+Code and [documentation](https://github.com/DiegoLopesLima/warble/wiki/Documentation) copyright © 2016-2017 Warble.
 
 All content of this repository is licensed under the [MIT License](https://github.com/DiegoLopesLima/warble/blob/master/LICENSE.md).

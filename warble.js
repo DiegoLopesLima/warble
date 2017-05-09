@@ -4,17 +4,13 @@
 
 		objectTypes = ['Boolean', 'Number', 'String', 'Function', 'Array', 'Date', 'RegExp', 'Object', 'Error', 'Symbol'],
 
-		typesReference = {};
+		typesReference = {},
+
+		error = (value) => new Error(value);
 
 	for (let index = 0, size = objectTypes.length; index < size; index++)
 
 		typesReference[`[object ${objectTypes[index]}]`] = objectTypes[index].toLowerCase();
-
-	function error(value) {
-
-		return new Error(value);
-
-	}
 
 	class WarbleErrorList {
 
