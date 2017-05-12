@@ -250,6 +250,6 @@ Created and maintained by [Diego Lopes Lima](https://github.com/DiegoLopesLima).
 
 ## License
 
-Code and [documentation](https://github.com/DiegoLopesLima/warble/wiki/Documentation) copyright © 2016-2017 Warble.
+Code and [documentation](https://github.com/DiegoLopesLima/warble/wiki/Documentation) copyright © 2017 Warble.
 
 All content of this repository is licensed under the [MIT License](https://github.com/DiegoLopesLima/warble/blob/master/LICENSE.md).
