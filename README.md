@@ -58,7 +58,19 @@ let
 		},
 		gender: {
 			options: ['male', 'female', 'other']
-		}
+		},
+		address: warble.model({
+			country: {
+				required: true
+			},
+			postalCode: {
+				required: true,
+				is: ['numeric', 'positive']
+			},
+			street: {
+				required: true
+			}
+		})
 	}),
 
 	// Data example:
@@ -69,7 +81,12 @@ let
 		email: 'web.diego.lima@yahoo.com',
 		password: 'a1b2c3',
 		passwordConfirmation: '1a2b3c',
-		gender: 'male'
+		gender: 'male',
+		address: {
+			country: 'Brazil',
+			postalCode: 54321,
+			street: 'Lorem ipsum dolor, 123'
+		}
 	};
 
 // Validating data:
@@ -79,17 +96,52 @@ model.validate(data);
 #### Output
 
 ```javascript
-Object {
+WarbleResponse {
 	"data": Object {
+		"address": Object {
+			"country": "Brazil",
+			"postalCode": 54321,
+			"street": "Lorem ipsum dolor, 123"
+		},
 		"age": 23,
 		"email": "web.diego.lima@yahoo.com",
+		"gender": "male",
 		"name": "Diego",
 		"password": "a1b2c3",
 		"passwordConfirmation": "1a2b3c",
 		"surname": "Lopes Lima"
 	},
 	"invalid": true,
-	"results": Object {
+	"response": Object {
+		"address": WarbleResponse {
+			"data": Object {
+				"country": "Brazil",
+				"postalCode": 54321,
+				"street": "Lorem ipsum dolor, 123"
+			},
+			"invalid": false,
+			"response": Object {
+				"country": WarbleFragment {
+					"error": Object {},
+					"invalid": false,
+					"valid": true,
+					"value": "Brazil"
+				},
+				"postalCode": WarbleFragment {
+					"error": Object {},
+					"invalid": false,
+					"valid": true,
+					"value": 54321
+				},
+				"street": WarbleFragment {
+					"error": Object {},
+					"invalid": false,
+					"valid": true,
+					"value": "Lorem ipsum dolor, 123"
+				}
+			},
+			"valid": true
+		},
 		"age": WarbleFragment {
 			"error": Object {},
 			"invalid": false,
@@ -166,32 +218,26 @@ WarbleFragment {
 
 ### Getting data type:
 
-#### Source
+#### Example
 ```javascript
-var value = ['lorem', 'ipsum'];
+warble.type(['lorem', 'ipsum']); // "array"
 
-warble.type(value);
-```
+warble.type({ name: 'Diego Lopes Lima' }); // "object"
 
-#### Output
-
-```javascript
-"array"
+warble.type('Hello world!'); // "string"
 ```
 
 ### Testing data:
 
-#### Source
+#### Example
 ```javascript
-var value = -1;
+var value = '-1';
 
-warble.is(value, ['number', 'negative']);
-```
+warble.is(value, 'number'); // false
 
-#### Output
+warble.is(value, 'string'); // true
 
-```javascript
-true
+warble.is(value, ['numeric', 'negative']); // true
 ```
 
 ## Changelog

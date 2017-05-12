@@ -196,6 +196,40 @@
 
 	}
 
+	class WarbleResponse {
+
+		constructor() {
+
+			this.response = {};
+
+			this.valid = true;
+
+			this.invalid = false;
+
+			this.data = {};
+
+		}
+
+		setResponse(index, value) {
+
+			this.response[index] = value;
+
+		}
+
+		setData(index, value) {
+
+			this.data[index] = value;
+
+		}
+
+		setValid(status) {
+
+			[this.valid, this.invalid] = [status, !status];
+
+		}
+
+	}
+
 	class WarbleModel {
 
 		constructor(model) {
@@ -214,30 +248,29 @@
 
 			if (typeof data === 'object') {
 
-				let
-
-					response = {
-						results: {},
-						valid: true,
-						invalid: false,
-						data: {}
-					};
+				let response = new WarbleResponse;
 
 				for (let index in this.model) {
 
 					let value = new WarbleFragment(data[index]);
 
-					if (typeof this.model[index] === 'object')
+					if (this.model[index] instanceof WarbleModel) {
+
+						response.setResponse(index, this.model[index].validate(data[index]));
+
+					} else if (typeof this.model[index] === 'object') {
 
 						for (let validation in this.model[index])
 
 							if (value.validate(validation, this.model[index][validation], data).invalid)
 
-								[response.valid, response.invalid] = [false, true];
+								response.setValid(false);
 
-					response.results[index] = value;
+						response.setResponse(index, value);
 
-					response.data[index] = value.value;
+					}
+
+					response.setData(index, value.value);
 
 				}
 
