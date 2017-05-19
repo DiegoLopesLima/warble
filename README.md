@@ -31,7 +31,7 @@ warble.fn.is.gmail = (value) => /\@gmail\.com$/i.test(value);
 
 let
 
-	// Create a data model:
+	// Create a data model
 	model = warble.model({
 		name: {
 			required: true,
@@ -73,7 +73,7 @@ let
 		})
 	}),
 
-	// Data example:
+	// Data example
 	data = {
 		name: 'Diego',
 		surname: 'Lopes Lima',
@@ -89,7 +89,7 @@ let
 		}
 	};
 
-// Validating data:
+// Validating data
 model.validate(data);
 ```
 
