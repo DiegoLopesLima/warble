@@ -111,7 +111,6 @@ WarbleResponse {
 		"passwordConfirmation": "1a2b3c",
 		"surname": "Lopes Lima"
 	},
-	"invalid": true,
 	"response": Object {
 		"address": WarbleResponse {
 			"data": Object {
@@ -119,23 +118,19 @@ WarbleResponse {
 				"postalCode": 54321,
 				"street": "Lorem ipsum dolor, 123"
 			},
-			"invalid": false,
 			"response": Object {
 				"country": WarbleFragment {
 					"error": Object {},
-					"invalid": false,
 					"valid": true,
 					"value": "Brazil"
 				},
 				"postalCode": WarbleFragment {
 					"error": Object {},
-					"invalid": false,
 					"valid": true,
 					"value": 54321
 				},
 				"street": WarbleFragment {
 					"error": Object {},
-					"invalid": false,
 					"valid": true,
 					"value": "Lorem ipsum dolor, 123"
 				}
@@ -144,7 +139,6 @@ WarbleResponse {
 		},
 		"age": WarbleFragment {
 			"error": Object {},
-			"invalid": false,
 			"valid": true,
 			"value": 23
 		},
@@ -153,25 +147,21 @@ WarbleResponse {
 				"is": true,
 				"is:gmail": true
 			},
-			"invalid": true,
 			"valid": false,
 			"value": "web.diego.lima@yahoo.com"
 		},
 		"gender": WarbleFragment {
 			"error": Object {},
-			"invalid": false,
 			"valid": true,
 			"value": "male"
 		},
 		"name": WarbleFragment {
 			"error": Object {},
-			"invalid": false,
 			"valid": true,
 			"value": "Diego"
 		},
 		"password": WarbleFragment {
 			"error": Object {},
-			"invalid": false,
 			"valid": true,
 			"value": "a1b2c3"
 		},
@@ -179,13 +169,11 @@ WarbleResponse {
 			"error": Object {
 				"equal": true
 			},
-			"invalid": true,
 			"valid": false,
 			"value": "1a2b3c"
 		},
 		"surname": WarbleFragment {
 			"error": Object {},
-			"invalid": false,
 			"valid": true,
 			"value": "Lopes Lima"
 		}
@@ -200,8 +188,8 @@ WarbleResponse {
 
 ```javascript
 warble.validate(data.name, {
-	'required': true,
-	'minlength': 3
+	required: true,
+	minlength: 3
 });
 ```
 
@@ -210,7 +198,6 @@ warble.validate(data.name, {
 ```javascript
 WarbleFragment {
 	"error": Object {},
-	"invalid": false,
 	"valid": true,
 	"value": "Diego"
 }

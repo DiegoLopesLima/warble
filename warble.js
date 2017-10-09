@@ -160,8 +160,6 @@
 
 			this.valid = true;
 
-			this.invalid = false;
-
 			this.error = {};
 
 		}
@@ -173,8 +171,6 @@
 			if (!response || response instanceof WarbleErrorList) {
 
 				this.valid = false;
-
-				this.invalid = true;
 
 				this.error[name] = true;
 
@@ -204,8 +200,6 @@
 
 			this.valid = true;
 
-			this.invalid = false;
-
 			this.data = {};
 
 		}
@@ -224,7 +218,7 @@
 
 		setValid(status) {
 
-			[this.valid, this.invalid] = [status, !status];
+			this.valid = status;
 
 		}
 
@@ -262,7 +256,7 @@
 
 						for (let validation in this.model[index])
 
-							if (value.validate(validation, this.model[index][validation], data).invalid)
+							if (!value.validate(validation, this.model[index][validation], data).valid)
 
 								response.setValid(false);
 
