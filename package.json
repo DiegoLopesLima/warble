@@ -1,6 +1,6 @@
 {
   "name": "warble",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-alpha.5",
   "description": "A validation library for client-side and server-side.",
   "main": "./dist/warble.min.js",
   "keywords": [

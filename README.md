@@ -96,40 +96,26 @@ model.validate(data);
 #### Output
 
 ```javascript
-WarbleResponse {
-	"data": Object {
-		"address": Object {
-			"country": "Brazil",
-			"postalCode": 54321,
-			"street": "Lorem ipsum dolor, 123"
-		},
-		"age": 23,
-		"email": "web.diego.lima@yahoo.com",
-		"gender": "male",
-		"name": "Diego",
-		"password": "a1b2c3",
-		"passwordConfirmation": "1a2b3c",
-		"surname": "Lopes Lima"
-	},
+Response {
 	"response": Object {
-		"address": WarbleResponse {
+		"address": Response {
 			"data": Object {
 				"country": "Brazil",
 				"postalCode": 54321,
 				"street": "Lorem ipsum dolor, 123"
 			},
 			"response": Object {
-				"country": WarbleFragment {
+				"country": ResponseFragment {
 					"error": Object {},
 					"valid": true,
 					"value": "Brazil"
 				},
-				"postalCode": WarbleFragment {
+				"postalCode": ResponseFragment {
 					"error": Object {},
 					"valid": true,
 					"value": 54321
 				},
-				"street": WarbleFragment {
+				"street": ResponseFragment {
 					"error": Object {},
 					"valid": true,
 					"value": "Lorem ipsum dolor, 123"
@@ -137,12 +123,12 @@ WarbleResponse {
 			},
 			"valid": true
 		},
-		"age": WarbleFragment {
+		"age": ResponseFragment {
 			"error": Object {},
 			"valid": true,
 			"value": 23
 		},
-		"email": WarbleFragment {
+		"email": ResponseFragment {
 			"error": Object {
 				"is": true,
 				"is:gmail": true
@@ -150,29 +136,29 @@ WarbleResponse {
 			"valid": false,
 			"value": "web.diego.lima@yahoo.com"
 		},
-		"gender": WarbleFragment {
+		"gender": ResponseFragment {
 			"error": Object {},
 			"valid": true,
 			"value": "male"
 		},
-		"name": WarbleFragment {
+		"name": ResponseFragment {
 			"error": Object {},
 			"valid": true,
 			"value": "Diego"
 		},
-		"password": WarbleFragment {
+		"password": ResponseFragment {
 			"error": Object {},
 			"valid": true,
 			"value": "a1b2c3"
 		},
-		"passwordConfirmation": WarbleFragment {
+		"passwordConfirmation": ResponseFragment {
 			"error": Object {
 				"equal": true
 			},
 			"valid": false,
 			"value": "1a2b3c"
 		},
-		"surname": WarbleFragment {
+		"surname": ResponseFragment {
 			"error": Object {},
 			"valid": true,
 			"value": "Lopes Lima"
@@ -196,7 +182,7 @@ warble.validate(data.name, {
 #### Output
 
 ```javascript
-WarbleFragment {
+ResponseFragment {
 	"error": Object {},
 	"valid": true,
 	"value": "Diego"

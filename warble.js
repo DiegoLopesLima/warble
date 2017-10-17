@@ -12,7 +12,7 @@
 
 		typesReference[`[object ${objectTypes[index]}]`] = objectTypes[index].toLowerCase();
 
-	class WarbleErrorList {
+	class ErrorList {
 
 		constructor() {
 
@@ -40,13 +40,12 @@
 
 	}
 
-	class WarbleCore {
+	class Core {
 
 		constructor() {
 
 			this.fn = {
 				is: {
-					// https://www.w3.org/TR/html5/forms.html#e-mail-state-(type=email)
 					email: (value) => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(value),
 					numeric: (value) => /^\-?\d+(?:\.\d+)?$/.test(value),
 					integer: (value) => /^\-?\d+$/.test(value),
@@ -144,15 +143,15 @@
 
 		createErrorList() {
 
-			return new WarbleErrorList;
+			return new ErrorList;
 
 		}
 
 	}
 
-	let core = new WarbleCore;
+	let core = new Core;
 
-	class WarbleFragment {
+	class ResponseFragment {
 
 		constructor(value) {
 
@@ -168,13 +167,13 @@
 
 			var response = typeof core.fn.validate[name] === 'function' ? core.fn.validate[name].call(parent, this.value, param) : true;
 
-			if (!response || response instanceof WarbleErrorList) {
+			if (!response || response instanceof ErrorList) {
 
 				this.valid = false;
 
 				this.error[name] = true;
 
-				if (response instanceof WarbleErrorList)
+				if (response instanceof ErrorList)
 
 					for (let index = 0, size = response.errors.length; index < size; index++)
 
@@ -192,25 +191,17 @@
 
 	}
 
-	class WarbleResponse {
+	class Response {
 
 		constructor() {
 
-			this.response = {};
+			this.data = {};
 
 			this.valid = true;
-
-			this.data = {};
 
 		}
 
 		setResponse(index, value) {
-
-			this.response[index] = value;
-
-		}
-
-		setData(index, value) {
 
 			this.data[index] = value;
 
@@ -224,7 +215,7 @@
 
 	}
 
-	class WarbleModel {
+	class Model {
 
 		constructor(model) {
 
@@ -234,7 +225,7 @@
 
 			else
 
-				throw error('WarbleModel expects an object.');
+				throw error('Model expects an object.');
 
 		}
 
@@ -242,13 +233,13 @@
 
 			if (typeof data === 'object') {
 
-				let response = new WarbleResponse;
+				let response = new Response;
 
 				for (let index in this.model) {
 
-					let value = new WarbleFragment(data[index]);
+					let value = new ResponseFragment(data[index]);
 
-					if (this.model[index] instanceof WarbleModel) {
+					if (this.model[index] instanceof Model) {
 
 						response.setResponse(index, this.model[index].validate(data[index]));
 
@@ -264,25 +255,23 @@
 
 					}
 
-					response.setData(index, value.value);
-
 				}
 
 				return response;
 
 			} else
 
-				throw error('WarbleModel.validate expects an object.');
+				throw error('Model.validate expects an object.');
 
 		}
 
 	}
 
-	class Warble extends WarbleCore {
+	class Warble extends Core {
 
 		model(model) {
 
-			return new WarbleModel(model);
+			return new Model(model);
 
 		}
 
@@ -290,7 +279,7 @@
 
 			if (typeof options === 'object') {
 
-				var value = new WarbleFragment(value);
+				var value = new ResponseFragment(value);
 
 				for (let index in options)
 
