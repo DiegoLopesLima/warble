@@ -97,14 +97,9 @@ model.validate(data);
 
 ```javascript
 Response {
-	"response": Object {
+	"data": Object {
 		"address": Response {
 			"data": Object {
-				"country": "Brazil",
-				"postalCode": 54321,
-				"street": "Lorem ipsum dolor, 123"
-			},
-			"response": Object {
 				"country": ResponseFragment {
 					"error": Object {},
 					"valid": true,
