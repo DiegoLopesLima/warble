@@ -37,10 +37,6 @@ let
 			required: true,
 			minlength: 3
 		},
-		surname: {
-			required: true,
-			minlength: 3
-		},
 		age: {
 			required: true,
 			min: 18,
@@ -60,9 +56,6 @@ let
 			options: ['male', 'female', 'other']
 		},
 		address: warble.model({
-			country: {
-				required: true
-			},
 			postalCode: {
 				required: true,
 				is: ['numeric', 'positive']
@@ -75,15 +68,13 @@ let
 
 	// Data example
 	data = {
-		name: 'Diego',
-		surname: 'Lopes Lima',
+		name: 'Diego Lopes Lima',
 		age: 23,
 		email: 'web.diego.lima@yahoo.com',
 		password: 'a1b2c3',
 		passwordConfirmation: '1a2b3c',
 		gender: 'male',
 		address: {
-			country: 'Brazil',
 			postalCode: 54321,
 			street: 'Lorem ipsum dolor, 123'
 		}
@@ -100,11 +91,6 @@ Response {
 	"data": Object {
 		"address": Response {
 			"data": Object {
-				"country": ResponseFragment {
-					"error": Object {},
-					"valid": true,
-					"value": "Brazil"
-				},
 				"postalCode": ResponseFragment {
 					"error": Object {},
 					"valid": true,
@@ -152,11 +138,6 @@ Response {
 			},
 			"valid": false,
 			"value": "1a2b3c"
-		},
-		"surname": ResponseFragment {
-			"error": Object {},
-			"valid": true,
-			"value": "Lopes Lima"
 		}
 	},
 	"valid": false
