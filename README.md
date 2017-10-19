@@ -86,58 +86,80 @@ model.validate(data);
 
 #### Output
 
-```javascript
-Response {
-	"data": Object {
-		"address": Response {
-			"data": Object {
-				"postalCode": ResponseFragment {
-					"errors": Object {},
+```json
+{
+	"data": {
+		"name": {
+			"value": "Diego Lopes Lima",
+			"valid": true,
+			"status": {
+				"required": true,
+				"minlength": true
+			}
+		},
+		"age": {
+			"value": 23,
+			"valid": true,
+			"status": {
+				"required": true,
+				"min": true,
+				"isInteger": true,
+				"isPositive": true,
+				"is": true
+			}
+		},
+		"email": {
+			"value": "web.diego.lima@yahoo.com",
+			"valid": true,
+			"status": {
+				"isEmail": true,
+				"isGmail": false,
+				"is": false
+			}
+		},
+		"password": {
+			"value": "a1b2c3",
+			"valid": true,
+			"status": {
+				"required": true
+			}
+		},
+		"passwordConfirmation": {
+			"value": "1a2b3c",
+			"valid": false,
+			"status": {
+				"required": true,
+				"equal": false
+			}
+		},
+		"gender": {
+			"value": "male",
+			"valid": true,
+			"status": {
+				"options": true
+			}
+		},
+		"address": {
+			"data": {
+				"postalCode": {
+					"value": 54321,
 					"valid": true,
-					"value": 54321
+					"status": {
+						"required": true,
+						"isNumeric": true,
+						"isPositive": true,
+						"is": true
+					}
 				},
-				"street": ResponseFragment {
-					"errors": Object {},
+				"street": {
+					"value": "Lorem ipsum dolor, 123",
 					"valid": true,
-					"value": "Lorem ipsum dolor, 123"
+					"status": {
+						"required": true
+					}
 				}
 			},
 			"valid": true
-		},
-		"age": ResponseFragment {
-			"errors": Object {},
-			"valid": true,
-			"value": 23
-		},
-		"email": ResponseFragment {
-			"errors": Object {
-				"is": true,
-				"is:gmail": true
-			},
-			"valid": false,
-			"value": "web.diego.lima@yahoo.com"
-		},
-		"gender": ResponseFragment {
-			"errors": Object {},
-			"valid": true,
-			"value": "male"
-		},
-		"name": ResponseFragment {
-			"errors": Object {},
-			"valid": true,
-			"value": "Diego"
-		},
-		"password": ResponseFragment {
-			"errors": Object {},
-			"valid": true,
-			"value": "a1b2c3"
-		},
-		"passwordConfirmation": ResponseFragment {
-			"errors": Object {
-				"equal": true
-			},
-			"valid": false,
-			"value": "1a2b3c"
 		}
 	},
 	"valid": false
@@ -157,11 +179,14 @@ warble.validate(data.name, {
 
 #### Output
 
-```javascript
-ResponseFragment {
-	"errors": Object {},
+```json
+{
+	"value": "Diego Lopes Lima",
 	"valid": true,
-	"value": "Diego"
+	"status": {
+		"required": true,
+		"minlength": true
+	}
 }
 ```
 
