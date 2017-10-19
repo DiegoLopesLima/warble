@@ -169,17 +169,29 @@
 
 			var response = typeof core.validations[name] === 'function' ? core.validations[name].call(parent, this.value, param) : true;
 
-			this.status[name] = response;
-
 			if (!response)
 
 				this.valid = false;
 
-			if (typeof response === 'object')
+			if (typeof response === 'object') {
 
-				for (let index in response)
+				let status = true;
+
+				for (let index in response) {
 
 					this.status[name + index[0].toUpperCase() + index.substr(1)] = response[index];
+
+					if (!response[index])
+
+						status = false;
+
+				}
+
+				this.status[name] = status;
+
+			} else
+
+				this.status[name] = response;
 
 			return this;
 
