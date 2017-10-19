@@ -27,11 +27,12 @@ npm install --save warble
 
 ```javascript
 // Create an extension to verify if value is a Gmail address.
-warble.subtypes.gmail = (value) => /\@gmail\.com$/i.test(value);
+warble.subtypes.gmail = value => /\@gmail\.com$/i.test(value);
 
 let
 
-	// Create a data model
+	// Creating an object model:
+
 	model = warble.model({
 		name: {
 			required: true,
@@ -66,7 +67,8 @@ let
 		})
 	}),
 
-	// Data example
+	// Data example:
+
 	data = {
 		name: 'Diego Lopes Lima',
 		age: 23,
@@ -80,7 +82,8 @@ let
 		}
 	};
 
-// Validating data
+// Testing data:
+
 model.validate(data);
 ```
 
