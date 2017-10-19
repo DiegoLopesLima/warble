@@ -1,6 +1,6 @@
 # Warble
 
-A validation library for client-side and server-side.
+An universal javascript validation library.
 
 > See the [documentation](https://github.com/DiegoLopesLima/warble/wiki/Documentation) for more information.
 
@@ -27,7 +27,7 @@ npm install --save warble
 
 ```javascript
 // Create an extension to verify if value is a Gmail address.
-warble.fn.is.gmail = (value) => /\@gmail\.com$/i.test(value);
+warble.subtypes.gmail = (value) => /\@gmail\.com$/i.test(value);
 
 let
 
@@ -92,12 +92,12 @@ Response {
 		"address": Response {
 			"data": Object {
 				"postalCode": ResponseFragment {
-					"error": Object {},
+					"errors": Object {},
 					"valid": true,
 					"value": 54321
 				},
 				"street": ResponseFragment {
-					"error": Object {},
+					"errors": Object {},
 					"valid": true,
 					"value": "Lorem ipsum dolor, 123"
 				}
@@ -105,12 +105,12 @@ Response {
 			"valid": true
 		},
 		"age": ResponseFragment {
-			"error": Object {},
+			"errors": Object {},
 			"valid": true,
 			"value": 23
 		},
 		"email": ResponseFragment {
-			"error": Object {
+			"errors": Object {
 				"is": true,
 				"is:gmail": true
 			},
@@ -118,22 +118,22 @@ Response {
 			"value": "web.diego.lima@yahoo.com"
 		},
 		"gender": ResponseFragment {
-			"error": Object {},
+			"errors": Object {},
 			"valid": true,
 			"value": "male"
 		},
 		"name": ResponseFragment {
-			"error": Object {},
+			"errors": Object {},
 			"valid": true,
 			"value": "Diego"
 		},
 		"password": ResponseFragment {
-			"error": Object {},
+			"errors": Object {},
 			"valid": true,
 			"value": "a1b2c3"
 		},
 		"passwordConfirmation": ResponseFragment {
-			"error": Object {
+			"errors": Object {
 				"equal": true
 			},
 			"valid": false,
@@ -159,7 +159,7 @@ warble.validate(data.name, {
 
 ```javascript
 ResponseFragment {
-	"error": Object {},
+	"errors": Object {},
 	"valid": true,
 	"value": "Diego"
 }

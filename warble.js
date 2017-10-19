@@ -1,195 +1,135 @@
 {
 
-	let
+	let specificTypes = {};
 
-		objectTypes = ['Boolean', 'Number', 'String', 'Function', 'Array', 'Date', 'RegExp', 'Object', 'Error', 'Symbol'],
+	[
+		'Boolean',
+		'Number',
+		'String',
+		'Function',
+		'Array',
+		'Date',
+		'RegExp',
+		'Object',
+		'Error',
+		'Symbol'
+	]
 
-		typesReference = {},
-
-		error = (value) => new Error(value);
-
-	for (let index = 0, size = objectTypes.length; index < size; index++)
-
-		typesReference[`[object ${objectTypes[index]}]`] = objectTypes[index].toLowerCase();
-
-	class ErrorList {
-
-		constructor() {
-
-			this.errors = [];
-
-		}
-
-		addError(error) {
-
-			if (typeof error === 'string')
-
-				this.errors.push(error);
-
-			else if (typeof error === 'function' && error.name)
-
-				this.errors.push(error.name);
-
-		}
-
-		hasErrors() {
-
-			return this.errors.length > 0;
-
-		}
-
-	}
+		.forEach(value => specificTypes[`[object ${value}]`] = value.toLowerCase());
 
 	class Core {
 
 		constructor() {
 
-			this.fn = {
-				is: {
-					email: (value) => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(value),
-					numeric: (value) => /^\-?\d+(?:\.\d+)?$/.test(value),
-					integer: (value) => /^\-?\d+$/.test(value),
-					positive: (value) => /^\d+(?:\.\d+)?$/.test(value),
-					negative: (value) => /^\-\d+(?:\.\d+)?$/.test(value),
-					even: (value) => (Number(value) % 2) === 0,
-					odd: (value) => (Number(value) % 2) > 0
+			this.regex = {
+				email: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+				numeric: /^\-?\d+(?:\.\d+)?$/,
+				integer: /^\-?\d+$/,
+				positive: /^\d+(?:\.\d+)?$/,
+				negative: /^\-\d+(?:\.\d+)?$/
+			};
+
+			var { regex } = this;
+
+			this.subtypes = {
+				email: value => regex.email.test(value),
+				numeric: value => regex.numeric.test(value),
+				integer: value => regex.integer.test(value),
+				positive: value => regex.positive.test(value),
+				negative: value => regex.negative.test(value),
+				even: value => value % 2 === 0,
+				odd: value => value % 2 > 0
+			};
+
+			this.validations = {
+				required: (value, isRequired) => isRequired ? value !== undefined : true,
+				pattern: (value, pattern) => (core.is(pattern, 'regexp') ? pattern : new RegExp(pattern)).test(value),
+				min: (value, min = -Infinity) => (Number(value) || 0) >= (Number(min) || 0),
+				max: (value, max = Infinity) => (Number(value) || 0) <= (Number(max) || 0),
+				minlength: (value, min = 0) => typeof value === 'string' ? value.length >= (Number(min) || 0) : false,
+				maxlength: (value, max = Infinity) => typeof value === 'string' ? value.length <= (Number(max) || 0) : false,
+				type: (value, type) => core.type(value) === type,
+				is: (value, types) => core.is(value, types, true),
+				range: (value, range = [-Infinity, Infinity]) => (core.is(range, 'array') && range.length > 1) ? Number(value) >= Number(range[0]) && Number(value) <= Number(range[1]) : false,
+				equal(value, to)  {
+
+					return typeof this === 'object' && this.hasOwnProperty(to) ? value === this[to] : false;
+
 				},
-				validate: {
-					required: (value, isRequired) => isRequired ? value !== undefined : true,
-					pattern: (value, pattern) => (core.is(pattern, 'regexp') ? pattern : new RegExp(pattern)).test(value),
-					min: (value, min = -Infinity) => (Number(value) || 0) >= (Number(min) || 0),
-					max: (value, max = Infinity) => (Number(value) || 0) <= (Number(max) || 0),
-					minlength: (value, min = 0) => typeof value === 'string' ? value.length >= (Number(min) || 0) : false,
-					maxlength: (value, max = Infinity) => typeof value === 'string' ? value.length <= (Number(max) || 0) : false,
-					type: (value, type) => core.type(value) === type,
-					is(value, types) {
+				conditional: (value, conditional) => conditional(value),
+				options(value, options) {
 
-						var errorList = core.is(value, types, true);
+					if (core.is(options, 'array'))
 
-						return errorList.hasErrors() ? errorList : true
+						for (let index = 0, size = options.length; index < size; index++)
 
-					},
-					range: (value, range = [-Infinity, Infinity]) => (core.is(range, 'array') && range.length > 1) ? Number(value) >= Number(range[0]) && Number(value) <= Number(range[1]) : false,
-					equal(value, to)  {
+							if (value === options[index])
 
-						return typeof this === 'object' && this.hasOwnProperty(to) ? value === this[to] : false;
+								return true;
 
-					},
-					conditional: (value, conditional) => conditional(value),
-					options(value, options) {
+					return false;
 
-						if (core.is(options, 'array'))
-
-							for (let index = 0, size = options.length; index < size; index++)
-
-								if (value === options[index])
-
-									return true;
-
-						return false;
-
-					},
-					instance: (value, object) => value instanceof object
-				}
+				},
+				instance: (value, object) => value instanceof object
 			};
 
 		}
 
 		type(value) {
 
-			return value === null ? 'null' : (typeof value === 'object' || typeof value === 'function' ? typesReference[typesReference.toString.call(value)] || 'object' : typeof value);
+			return value === null ? 'null' : (typeof value === 'object' || typeof value === 'function' ? specificTypes[specificTypes.toString.call(value)] || 'object' : typeof value);
 
 		}
 
-		is(value, types, getErrorList) {
+		is(value, types, getDetails) {
 
 			var
 
-				errorList = this.createErrorList(),
+				response = {},
 
-				{ fn, type } = this;
+				{ subtypes, type } = this;
 
 			if (type(types) === 'array') {
 
 				for (let index = 0, size = types.length; index < size; index++) {
 
-					let test = fn.is[types[index]];
+					let test = subtypes[types[index]];
 
-					if (typeof test === 'function') {
+					if (typeof test === 'function')
 
-						if (!test.call(this, value))
+						response[types[index]] = test.call(this, value);
 
-							errorList.addError(types[index]);
+					else
 
-					} else if (!(type(value) === types[index]))
-
-						errorList.addError(types[index]);
+						response[types[index]] = type(value) === types[index];
 
 				}
 
-			} else if (typeof fn.is[types] === 'function') {
+			} else if (typeof subtypes[types] === 'function')
 
-				if (!fn.is[types].call(this, value))
+				response[types] = subtypes[types].call(this, value);
 
-					errorList.addError(types);
+			else
 
-			} else if (!(type(value) === types))
+				response[types] = type(value) === types;
 
-				errorList.addError(types);
+			if (getDetails)
 
-			return getErrorList ? errorList : !errorList.hasErrors();
+				return response;
 
-		}
+			for (let index in response)
 
-		createErrorList() {
+				if (!response[index])
 
-			return new ErrorList;
+					return false;
+
+			return true;
 
 		}
 
 	}
 
 	let core = new Core;
-
-	class ResponseFragment {
-
-		constructor(value) {
-
-			this.value = value;
-
-			this.valid = true;
-
-			this.error = {};
-
-		}
-
-		validate(name, param, parent) {
-
-			var response = typeof core.fn.validate[name] === 'function' ? core.fn.validate[name].call(parent, this.value, param) : true;
-
-			if (!response || response instanceof ErrorList) {
-
-				this.valid = false;
-
-				this.error[name] = true;
-
-				if (response instanceof ErrorList)
-
-					for (let index = 0, size = response.errors.length; index < size; index++)
-
-						if (response.errors[index] !== name)
-
-							this.error[`${name}:${response.errors[index]}`] = true;
-
-			} else
-
-				delete this.error[name];
-
-			return this;
-
-		}
-
-	}
 
 	class Response {
 
@@ -201,15 +141,47 @@
 
 		}
 
-		setResponse(index, value) {
+		setData(index, value) {
 
 			this.data[index] = value;
 
+			if (!value.valid)
+
+				this.valid = false;
+
 		}
 
-		setValid(status) {
+	}
 
-			this.valid = status;
+	class ResponseFragment {
+
+		constructor(value) {
+
+			this.value = value;
+
+			this.valid = true;
+
+			this.status = {};
+
+		}
+
+		validate(name, param, parent) {
+
+			var response = typeof core.validations[name] === 'function' ? core.validations[name].call(parent, this.value, param) : true;
+
+			this.status[name] = response;
+
+			if (!response)
+
+				this.valid = false;
+
+			if (typeof response === 'object')
+
+				for (let index in response)
+
+					this.status[name + index[0].toUpperCase() + index.substr(1)] = response[index];
+
+			return this;
 
 		}
 
@@ -225,7 +197,7 @@
 
 			else
 
-				throw error('Model expects an object.');
+				throw new Error('The expected param must be an object.');
 
 		}
 
@@ -239,19 +211,17 @@
 
 					let value = new ResponseFragment(data[index]);
 
-					if (this.model[index] instanceof Model) {
+					if (this.model[index] instanceof Model)
 
-						response.setResponse(index, this.model[index].validate(data[index]));
+						response.setData(index, this.model[index].validate(data[index]));
 
-					} else if (typeof this.model[index] === 'object') {
+					else if (typeof this.model[index] === 'object') {
 
 						for (let validation in this.model[index])
 
-							if (!value.validate(validation, this.model[index][validation], data).valid)
+							value.validate(validation, this.model[index][validation], data)
 
-								response.setValid(false);
-
-						response.setResponse(index, value);
+						response.setData(index, value);
 
 					}
 
@@ -261,7 +231,7 @@
 
 			} else
 
-				throw error('Model.validate expects an object.');
+				throw new Error('The expected param must be an object.');
 
 		}
 
@@ -289,7 +259,7 @@
 
 			} else
 
-				throw error('Warble.validate expects an object.');
+				throw error('The expected param must be an object.');
 
 		}
 
@@ -301,4 +271,4 @@
 
 		module.exports = warble;
 
-};
+}
