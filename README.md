@@ -215,11 +215,13 @@ warble.is(value, 'number'); // false
 warble.is(value, 'string'); // true
 
 warble.is(value, ['numeric', 'negative']); // true
+
+warble.is(value, ['numeric', 'positive']); // false
 ```
 
 ## Changelog
 
-Change log, previous [releases](https://github.com/DiegoLopesLima/warble/releases) and their documentations are also available for download on [releases](https://github.com/DiegoLopesLima/warble/releases).
+See [releases page](https://github.com/DiegoLopesLima/warble/releases).
 
 ## Credits
 

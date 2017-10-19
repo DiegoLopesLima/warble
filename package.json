@@ -1,19 +1,20 @@
 {
   "name": "warble",
-  "version": "1.0.0-alpha.5",
-  "description": "A validation library for client-side and server-side.",
+  "version": "1.0.0-alpha.6",
+  "description": "An universal javascript validation library.",
   "main": "./dist/warble.min.js",
   "keywords": [
+    "universal",
+    "javascript",
     "data",
+    "object",
     "validation",
+    "validator",
+    "validate",
     "library",
     "client-side",
     "server-side",
-    "validate",
-    "validator",
-    "javascript",
-    "node",
-    "object"
+    "node"
   ],
   "repository": {
     "type": "git",

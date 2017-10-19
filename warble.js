@@ -3,15 +3,15 @@
 	let specificTypes = {};
 
 	[
-		'Boolean',
-		'Number',
-		'String',
-		'Function',
 		'Array',
+		'Boolean',
 		'Date',
-		'RegExp',
-		'Object',
 		'Error',
+		'Function',
+		'Number',
+		'Object',
+		'RegExp',
+		'String',
 		'Symbol'
 	]
 
