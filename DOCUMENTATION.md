@@ -6,17 +6,37 @@
 
 ## Methods
 
-### warble.is
+### warble.type
 
-#### Sintaxe
+```text
+warble.type(value);
+```
+
+| Param | Type | Default   | Description              |
+| ----- | ---- | --------- | ------------------------ |
+| value | Any  | undefined | A value to get the type. |
+
+#### Example
+
+##### Source
+
+```javascript
+warble.type(['lorem', 'ipsum']);
+```
+
+##### Output
+
+```javascript
+"array"
+```
+
+### warble.is
 
 ```text
 warble.is(value, type[, getDetails]);
 ```
 
-#### Params
-
-| Param      | Types         | Default   | Description                                    |
+| Param      | Type          | Default   | Description                                    |
 | ---------- | ------------- | --------- | ---------------------------------------------- |
 | value      | Any           | undefined | A value to be tested.                          |
 | type       | String, Array | undefined | The type that the parameter `value` should be. |
