@@ -2,7 +2,7 @@
 
 An universal javascript validation library.
 
-> See the [documentation](https://github.com/DiegoLopesLima/warble/wiki/Documentation) for more information.
+> See the [documentation](https://github.com/DiegoLopesLima/warble/blob/master/DOCUMENTATION.md) for more information.
 
 ## Table of contents
 
@@ -89,7 +89,7 @@ model.validate(data);
 
 #### Output
 
-```json
+```javascript
 {
 	"data": {
 		"name": {
@@ -182,7 +182,7 @@ warble.validate(data.name, {
 
 #### Output
 
-```json
+```javascript
 {
 	"value": "Diego Lopes Lima",
 	"valid": true,
