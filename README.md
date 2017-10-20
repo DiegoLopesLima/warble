@@ -10,6 +10,8 @@ An universal javascript validation library.
 - [Usage](#usage)
 - [Credits](#credits)
 - [License](#license)
+- [Contributing](https://github.com/DiegoLopesLima/warble/blob/master/CONTRIBUTING.md)
+- [Documentation](https://github.com/DiegoLopesLima/warble/blob/master/DOCUMENTATION.md)
 
 ## Instalation
 
