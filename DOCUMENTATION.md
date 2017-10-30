@@ -2,13 +2,14 @@
 
 ## Table of contents
 
+- [warble.type](#warbletype)
 - [warble.is](#warbleis)
 
 ## Methods
 
 ### warble.type
 
-```text
+```javascript
 warble.type(value);
 ```
 
@@ -32,8 +33,8 @@ warble.type(['lorem', 'ipsum']);
 
 ### warble.is
 
-```text
-warble.is(value, type[, getDetails]);
+```javascript
+warble.is(value, type, getDetails);
 ```
 
 | Param      | Type          | Default   | Description                                    |
@@ -42,7 +43,7 @@ warble.is(value, type[, getDetails]);
 | type       | String, Array | undefined | The type that the parameter `value` should be. |
 | getDetails | Boolean       | false     | Enable a detailed return.                      |
 
-#### Simple examples
+#### Simple example
 
 ##### Source
 
@@ -56,22 +57,6 @@ warble.is(value, 'number');
 
 ```javascript
 false
-```
-
----
-
-##### Source
-
-```javascript
-var value = 'Lorem ipsum';
-
-warble.is(value, 'string')
-```
-
-##### Output
-
-```javascript
-true
 ```
 
 #### Multiple tests
@@ -88,22 +73,6 @@ warble.is(value, ['numeric', 'positive']);
 
 ```javascript
 false
-```
-
----
-
-##### Source
-
-```javascript
-var value = '-1';
-
-warble.is(value, ['numeric', 'negative']);
-```
-
-##### Output
-
-```javascript
-true
 ```
 
 #### Detailed results

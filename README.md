@@ -23,6 +23,56 @@ npm install --save warble
 
 ## Usage
 
+### Getting data type:
+
+#### Example
+```javascript
+warble.type(['lorem', 'ipsum']); // "array"
+
+warble.type({ name: 'Diego Lopes Lima' }); // "object"
+
+warble.type('Hello world!'); // "string"
+```
+
+### Testing data:
+
+#### Example
+```javascript
+var value = '-1';
+
+warble.is(value, 'number'); // false
+
+warble.is(value, 'string'); // true
+
+warble.is(value, ['numeric', 'negative']); // true
+
+warble.is(value, ['numeric', 'positive']); // false
+```
+
+### Validating a single data:
+
+#### Source
+
+```javascript
+warble.validate(data.name, {
+	required: true,
+	minlength: 3
+});
+```
+
+#### Output
+
+```javascript
+{
+	"value": "Diego Lopes Lima",
+	"valid": true,
+	"status": {
+		"required": true,
+		"minlength": true
+	}
+}
+```
+
 ### Creating a model
 
 #### Source
@@ -169,56 +219,6 @@ model.validate(data);
 	},
 	"valid": false
 }
-```
-
-### Validating a single data:
-
-#### Source
-
-```javascript
-warble.validate(data.name, {
-	required: true,
-	minlength: 3
-});
-```
-
-#### Output
-
-```javascript
-{
-	"value": "Diego Lopes Lima",
-	"valid": true,
-	"status": {
-		"required": true,
-		"minlength": true
-	}
-}
-```
-
-### Getting data type:
-
-#### Example
-```javascript
-warble.type(['lorem', 'ipsum']); // "array"
-
-warble.type({ name: 'Diego Lopes Lima' }); // "object"
-
-warble.type('Hello world!'); // "string"
-```
-
-### Testing data:
-
-#### Example
-```javascript
-var value = '-1';
-
-warble.is(value, 'number'); // false
-
-warble.is(value, 'string'); // true
-
-warble.is(value, ['numeric', 'negative']); // true
-
-warble.is(value, ['numeric', 'positive']); // false
 ```
 
 ## Changelog
