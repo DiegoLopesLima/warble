@@ -22,9 +22,8 @@
 		constructor() {
 
 			this.regex = {
-				email: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+				email: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/, // https://www.w3.org/TR/html5/forms.html#e-mail-state-(type=email)
 				numeric: /^\-?\d+(?:\.\d+)?$/,
-				integer: /^\-?\d+$/,
 				positive: /^\d+(?:\.\d+)?$/,
 				negative: /^\-\d+(?:\.\d+)?$/
 			};
@@ -34,11 +33,26 @@
 			this.subtypes = {
 				email: value => regex.email.test(value),
 				numeric: value => regex.numeric.test(value),
-				integer: value => regex.integer.test(value),
+				integer: value => Number.isInteger(Number(value)),
 				positive: value => regex.positive.test(value),
 				negative: value => regex.negative.test(value),
 				even: value => value % 2 === 0,
-				odd: value => value % 2 > 0
+				odd: value => value % 2 > 0,
+				prime(value) {
+
+					if ((value % 2 === 0 && value !== 2) || Number.isInteger(Math.sqrt(value)))
+
+						return false;
+
+					for (let index = Math.floor(value / 2); index > 1; index--)
+
+						if (value % index === 0)
+
+							return false;
+
+					return true;
+
+				}
 			};
 
 			this.validations = {
