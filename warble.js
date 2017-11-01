@@ -2,6 +2,12 @@
 
 	let specificTypes = {};
 
+	const
+
+		testRegExp = regexp => value => regexp.test(value),
+
+		isInteger = value => Number.isInteger(Number(value));
+
 	[
 		'Array',
 		'Boolean',
@@ -21,26 +27,26 @@
 
 		constructor() {
 
-			this.regex = {
-				email: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/, // https://www.w3.org/TR/html5/forms.html#e-mail-state-(type=email)
-				numeric: /^\-?\d+(?:\.\d+)?$/,
-				positive: /^\d+(?:\.\d+)?$/,
-				negative: /^\-\d+(?:\.\d+)?$/
-			};
+			var
 
-			var { regex } = this;
+				re = this.re = {
+					email: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/, // https://www.w3.org/TR/html5/forms.html#e-mail-state-(type=email)
+					numeric: /^\-?\d+(?:\.\d+)?$/,
+					positive: /^\d+(?:\.\d+)?$/,
+					negative: /^\-\d+(?:\.\d+)?$/
+				};
 
 			this.subtypes = {
-				email: value => regex.email.test(value),
-				numeric: value => regex.numeric.test(value),
-				integer: value => Number.isInteger(Number(value)),
-				positive: value => regex.positive.test(value),
-				negative: value => regex.negative.test(value),
+				email: testRegExp(re.email),
+				positive: testRegExp(re.positive),
+				negative: testRegExp(re.negative),
+				numeric: testRegExp(re.numeric),
+				integer: isInteger,
 				even: value => value % 2 === 0,
 				odd: value => value % 2 > 0,
 				prime(value) {
 
-					if ((value % 2 === 0 && value !== 2) || Number.isInteger(Math.sqrt(value)))
+					if ((value % 2 === 0 && value !== 2) || isInteger(Math.sqrt(value)))
 
 						return false;
 
@@ -71,19 +77,7 @@
 
 				},
 				conditional: (value, conditional) => conditional(value),
-				options(value, options) {
-
-					if (core.is(options, 'array'))
-
-						for (let index = 0, size = options.length; index < size; index++)
-
-							if (value === options[index])
-
-								return true;
-
-					return false;
-
-				},
+				options: (value, options) => !!options.find(current => current === value),
 				instance: (value, object) => value instanceof object
 			};
 
@@ -109,13 +103,7 @@
 
 					let test = subtypes[types[index]];
 
-					if (typeof test === 'function')
-
-						response[types[index]] = test.call(this, value);
-
-					else
-
-						response[types[index]] = type(value) === types[index];
+					response[types[index]] = typeof test === 'function' ? test.call(this, value) : type(value) === types[index];
 
 				}
 
@@ -144,6 +132,28 @@
 	}
 
 	let core = new Core;
+
+	class Message {
+
+		constructor(value, message) {
+
+			this.value = value;
+
+			this.message = message;
+
+		}
+
+		setResponse
+
+		getMessage() {}
+
+		getMessages(response) {}
+
+		getErrorMessages(response) {}
+
+		getSuccessMessages(response) {}
+
+	}
 
 	class Response {
 
