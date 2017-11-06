@@ -8,15 +8,31 @@
 
 		emptyObject = {},
 
-		emptyString = '';
+		emptyString = '',
+
+		currentDate = new Date;
 
 	test('warble.type', () => {
 
-		expect(warble.type(emptyArray)).toBe('array');
+		expect(emptyArray).toBe('array');
 
-		expect(warble.type(emptyObject)).toBe('object');
+		expect(true).toBe('boolean');
 
-		expect(warble.type(emptyString)).toBe('string');
+		expect(currentDate).toBe('date');
+
+		expect().toBe('error');
+
+		expect().toBe('function');
+
+		expect().toBe('number');
+
+		expect(emptyObject).toBe('object');
+
+		expect().toBe('regExp');
+
+		expect(emptyString).toBe('string');
+
+		expect().toBe('symbol');
 
 	});
 
