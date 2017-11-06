@@ -29,6 +29,7 @@
 
 			var
 
+
 				re = this.re = {
 					email: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/, // https://www.w3.org/TR/html5/forms.html#e-mail-state-(type=email)
 					numeric: /^\-?\d+(?:\.\d+)?$/,
@@ -132,28 +133,6 @@
 	}
 
 	let core = new Core;
-
-	class Message {
-
-		constructor(value, message) {
-
-			this.value = value;
-
-			this.message = message;
-
-		}
-
-		setResponse
-
-		getMessage() {}
-
-		getMessages(response) {}
-
-		getErrorMessages(response) {}
-
-		getSuccessMessages(response) {}
-
-	}
 
 	class Response {
 
