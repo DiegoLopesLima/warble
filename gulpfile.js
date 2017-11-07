@@ -6,13 +6,34 @@ const
 
 	gulpSourcemaps = require('gulp-sourcemaps'),
 
-	gulpConcat = require('gulp-concat');
+	gulpConcat = require('gulp-concat'),
+
+	gulpJest = require('gulp-jest').default,
+
+	sourcePath = './src';
 
 gulp
 
+	.task('test', () => {
+
+		gulp
+
+			.src(sourcePath)
+
+			.pipe(gulpJest({
+				coverage: true,
+				coverageReporters: ['text-summary'],
+				coverageDirectory: './warble.coverage.json',
+				verbose: true
+			}));
+
+	})
+
 	.task('build', () => {
 
-		gulp.src('warble.js')
+		gulp
+
+			.src('warble.js')
 
 			.pipe(gulpSourcemaps.init())
 
@@ -33,7 +54,9 @@ gulp
 
 	.task('watch', () => {
 
-		gulp.watch('warble.js', ['build']);
+		gulp.watch(`${sourcePath}/warble.js`, ['build']);
+
+		gulp.watch([`${sourcePath}/warble.js`, `${sourcePath}/warble.test.js`], ['test']);
 
 	})
 

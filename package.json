@@ -4,7 +4,7 @@
   "description": "An universal javascript validation library.",
   "main": "./dist/warble.min.js",
   "scripts": {
-    "test": "jest"
+    "test": "gulp test"
   },
   "keywords": [
     "universal",
@@ -34,7 +34,9 @@
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "gulp-concat": "^2.6.1",
+    "gulp-jest": "^3.0.1",
     "gulp-sourcemaps": "^2.6.0",
-    "jest": "^21.2.1"
+    "jest": "^21.2.1",
+    "jest-cli": "^21.2.1"
   }
 }

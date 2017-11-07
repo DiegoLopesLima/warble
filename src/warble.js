@@ -44,22 +44,7 @@
 				numeric: testRegExp(re.numeric),
 				integer: isInteger,
 				even: value => value % 2 === 0,
-				odd: value => value % 2 > 0,
-				prime(value) {
-
-					if ((value % 2 === 0 && value !== 2) || isInteger(Math.sqrt(value)))
-
-						return false;
-
-					for (let index = Math.floor(value / 2); index > 1; index--)
-
-						if (value % index === 0)
-
-							return false;
-
-					return true;
-
-				}
+				odd: value => value % 2 > 0
 			};
 
 			this.validations = {
@@ -274,7 +259,7 @@
 
 			} else
 
-				throw error('The expected param must be an object.');
+				throw new Error('The expected param must be an object.');
 
 		}
 
