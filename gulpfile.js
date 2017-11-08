@@ -22,7 +22,7 @@ gulp
 
 			.pipe(gulpJest({
 				coverage: true,
-				coverageReporters: ['text-summary'],
+				coverageReporters: ['text'],
 				coverageDirectory: './warble.coverage.json',
 				verbose: true
 			}));

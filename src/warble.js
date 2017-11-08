@@ -18,7 +18,8 @@
 		'Object',
 		'RegExp',
 		'String',
-		'Symbol'
+		'Symbol',
+		'Null'
 	]
 
 		.forEach(value => specificTypes[`[object ${value}]`] = value.toLowerCase());
