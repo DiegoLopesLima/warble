@@ -41,7 +41,7 @@
 				})
 			}),
 
-			response = model.validate({
+			validResponse = model.validate({
 				paramA: 'lorem',
 				paramB: 5,
 				paramC: 5,
@@ -52,13 +52,29 @@
 				paramH: {
 					paramI: 'lorem'
 				}
+			}),
+
+			invalidResponse = model.validate({
+				paramB: -1,
+				paramC: -1,
+				paramD: 0,
+				paramE: 0,
+				paramF: false,
+				paramG: false,
+				paramH: false
 			});
 
-		expect(response).toBeDefined();
+		expect(validResponse).toBeDefined();
 
-		expect(response.data).toBeDefined();
+		expect(validResponse.data).toBeDefined();
 
-		expect(response.valid).toBe(true);
+		expect(validResponse.valid).toBe(true);
+
+		expect(invalidResponse).toBeDefined();
+
+		expect(invalidResponse.data).toBeDefined();
+
+		expect(invalidResponse.valid).toBe(fase);
 
 		expect(() => warble.model()).toThrow();
 
