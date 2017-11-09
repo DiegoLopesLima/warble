@@ -76,9 +76,9 @@
 
 		expect(invalidResponse.valid).toBe(fase);
 
-		expect(() => warble.model()).toThrow();
-
 		expect(() => model.validate()).toThrow();
+
+		expect(() => warble.model()).toThrow();
 
 	});
 
@@ -144,6 +144,10 @@
 		expect(warble.is('x@x', 'email')).toBe(true);
 
 		expect(warble.is('abc', 'email')).toBe(false);
+
+		expect(warble.is('-1', ['numeric', 'positive'])).toBe(false);
+
+		expect(warble.is('-1', ['numeric', 'negative'])).toBe(true);
 
 		expect(warble.is('')).toBe(false);
 
@@ -403,9 +407,51 @@
 
 	});
 
-	test('warble.validations.is', () => {});
+	test('warble.validations.is', () => {
 
-	test('warble.validations.range', () => {});
+		expect(warble.validations.is('-1', 'number')).toBe(false);
+
+		expect(warble.validations.is('-1', 'string')).toBe(false);
+
+		expect(warble.validations.is('-1', 'numeric')).toBe(true);
+
+		expect(warble.validations.is('-1', ['numeric', 'positive'])).toBe(false);
+
+		expect(warble.validations.is('-1', ['numeric', 'negative'])).toBe(true);
+
+		expect(() => warble.validations.is(null)).toThrow();
+
+		expect(() => warble.validations.is('')).toThrow();
+
+		expect(() => warble.validations.is()).toThrow();
+
+	});
+
+	test('warble.validations.range', () => {
+
+		expect(warble.validations.range(5, [0, 10])).toBe(true);
+
+		expect(warble.validations.range(5, [0, 5])).toBe(true);
+
+		expect(warble.validations.range(5, [5, 5])).toBe(true);
+
+		expect(warble.validations.range('5', [0, 10])).toBe(true);
+
+		expect(warble.validations.range(0, [-5, 5])).toBe(true);
+
+		expect(warble.validations.range(2, [3, 5])).toBe(false);
+
+		expect(warble.validations.range(6, [3, 5])).toBe(false);
+
+		expect(warble.validations.range('', [0, 5])).toBe(false);
+
+		expect(() => warble.validations.range(null)).toThrow();
+
+		expect(() => warble.validations.range('')).toThrow();
+
+		expect(() => warble.validations.range()).toThrow();
+
+	});
 
 	test('warble.validations.equal', () => {});
 
