@@ -10,7 +10,9 @@ const
 
 	gulpJest = require('gulp-jest').default,
 
-	sourcePath = './src';
+	sourcePath = './src',
+
+	distributionPath = './dist';
 
 gulp
 
@@ -23,7 +25,6 @@ gulp
 			.pipe(gulpJest({
 				coverage: true,
 				coverageReporters: ['text'],
-				coverageDirectory: './warble.coverage.json',
 				verbose: true
 			}));
 
@@ -48,7 +49,7 @@ gulp
 
 			.pipe(gulpSourcemaps.write('.'))
 
-			.pipe(gulp.dest('dist'));
+			.pipe(gulp.dest(distributionPath));
 
 	})
 
