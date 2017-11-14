@@ -30,7 +30,6 @@
 
 			var
 
-
 				re = this.re = {
 					email: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/, // https://www.w3.org/TR/html5/forms.html#e-mail-state-(type=email)
 					numeric: /^\-?\d+(?:\.\d+)?$/,
@@ -220,7 +219,7 @@
 
 						for (let validation in this.model[index])
 
-							value.validate(validation, this.model[index][validation], data)
+							value.validate(validation, this.model[index][validation], data);
 
 						response.setData(index, value);
 
