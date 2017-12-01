@@ -157,11 +157,11 @@
 
 			var response = typeof core.validations[name] === 'function' ? core.validations[name].call(parent, this.value, param) : true;
 
-			if (!response)
-
-				this.valid = false;
-
 			if (typeof response === 'object') {
+
+				if (Object.values(response).filter(value => !value).length)
+
+					this.valid = false;
 
 				let status = true;
 
@@ -177,9 +177,15 @@
 
 				this.status[name] = status;
 
-			} else
+			} else {
+
+				if (!response)
+
+					this.valid = false;
 
 				this.status[name] = response;
+
+			}
 
 			return this;
 
@@ -209,19 +215,23 @@
 
 				for (let index in this.model) {
 
-					let value = new ResponseFragment(data[index]);
+					let
 
-					if (this.model[index] instanceof Model)
+						responseFragment = new ResponseFragment(data[index]),
 
-						response.setData(index, this.model[index].validate(data[index]));
+						modelFragment = this.model[index];
 
-					else if (typeof this.model[index] === 'object') {
+					if (modelFragment instanceof Model)
 
-						for (let validation in this.model[index])
+						response.setData(index, modelFragment.validate(data[index]));
 
-							value.validate(validation, this.model[index][validation], data);
+					else if (typeof modelFragment === 'object') {
 
-						response.setData(index, value);
+						for (let validation in modelFragment)
+
+							responseFragment.validate(validation, modelFragment[validation], data);
+
+						response.setData(index, responseFragment);
 
 					}
 
