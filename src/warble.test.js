@@ -61,7 +61,7 @@
 				paramE: 0,
 				paramF: false,
 				paramG: false,
-				paramH: false
+				paramH: {}
 			});
 
 		expect(validResponse).toBeDefined();
@@ -74,7 +74,7 @@
 
 		expect(invalidResponse.data).toBeDefined();
 
-		expect(invalidResponse.valid).toBe(fase);
+		expect(invalidResponse.valid).toBe(false);
 
 		expect(() => model.validate()).toThrow();
 

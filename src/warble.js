@@ -1,28 +1,22 @@
 {
 
-	let specificTypes = {};
+	let
 
-	const
+		specificTypes = {
+			'[object Array]': 'array',
+			'[object Boolean]': 'boolean',
+			'[object Date]': 'date',
+			'[object Error]': 'error',
+			'[object Function]': 'function',
+			'[object Null]': 'null',
+			'[object Number]': 'number',
+			'[object Object]': 'object',
+			'[object RegExp]': 'regexp',
+			'[object String]': 'string',
+			'[object Symbol]': 'symbol'
+		};
 
-		testRegExp = regexp => value => regexp.test(value),
-
-		isInteger = value => Number.isInteger(Number(value));
-
-	[
-		'Array',
-		'Boolean',
-		'Date',
-		'Error',
-		'Function',
-		'Number',
-		'Object',
-		'RegExp',
-		'String',
-		'Symbol',
-		'Null'
-	]
-
-		.forEach(value => specificTypes[`[object ${value}]`] = value.toLowerCase());
+	const testRegExp = regexp => value => regexp.test(value);
 
 	class Core {
 
@@ -42,7 +36,7 @@
 				positive: testRegExp(re.positive),
 				negative: testRegExp(re.negative),
 				numeric: testRegExp(re.numeric),
-				integer: isInteger,
+				integer: value => Number.isInteger(Number(value)),
 				even: value => value % 2 === 0,
 				odd: value => value % 2 > 0
 			};
@@ -155,13 +149,15 @@
 
 		validate(name, param, parent) {
 
-			var response = typeof core.validations[name] === 'function' ? core.validations[name].call(parent, this.value, param) : true;
+			if (typeof core.validations[name] === 'function')
+
+				var response = core.validations[name].call(parent, this.value, param);
+
+			else
+
+				throw new Error(`The param "${name}" is not a recognized validation function.`);
 
 			if (typeof response === 'object') {
-
-				if (Object.values(response).filter(value => !value).length)
-
-					this.valid = false;
 
 				let status = true;
 
@@ -169,9 +165,13 @@
 
 					this.status[name + index[0].toUpperCase() + index.substr(1)] = response[index];
 
-					if (!response[index])
+					if (!response[index]) {
+
+						this.valid = false;
 
 						status = false;
+
+					}
 
 				}
 

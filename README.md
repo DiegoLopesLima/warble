@@ -165,7 +165,7 @@ model.validate(data);
 		},
 		"email": {
 			"value": "web.diego.lima@yahoo.com",
-			"valid": true,
+			"valid": false,
 			"status": {
 				"isEmail": true,
 				"isGmail": false,
