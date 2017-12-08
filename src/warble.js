@@ -29,31 +29,41 @@
 					numeric: /^\-?\d+(?:\.\d+)?$/,
 					positive: /^\d+(?:\.\d+)?$/,
 					negative: /^\-\d+(?:\.\d+)?$/
-				};
+				},
+
+				isNumeric = testRegExp(re.numeric);
 
 			this.subtypes = {
 				email: testRegExp(re.email),
 				positive: testRegExp(re.positive),
 				negative: testRegExp(re.negative),
-				numeric: testRegExp(re.numeric),
-				integer: value => Number.isInteger(Number(value)),
-				even: value => value % 2 === 0,
-				odd: value => value % 2 > 0
+				numeric: isNumeric,
+				integer: value => isNumeric(value) ? Number.isInteger(Number(value)) : false,
+				even: value =>  isNumeric(value) ? value % 2 === 0 : false,
+				odd: value =>  isNumeric(value) ? (value < 0 ? (value * -1) : value) % 2 > 0 : false
 			};
 
 			this.validations = {
 				required: (value, isRequired) => isRequired ? value !== undefined : true,
 				pattern: (value, pattern) => (core.is(pattern, 'regexp') ? pattern : new RegExp(pattern)).test(value),
-				min: (value, min = -Infinity) => (Number(value) || 0) >= (Number(min) || 0),
-				max: (value, max = Infinity) => (Number(value) || 0) <= (Number(max) || 0),
-				minlength: (value, min = 0) => typeof value === 'string' ? value.length >= (Number(min) || 0) : false,
-				maxlength: (value, max = Infinity) => typeof value === 'string' ? value.length <= (Number(max) || 0) : false,
+				min: (value, min = -Infinity) => value >= min,
+				max: (value, max = Infinity) => value <= max,
+				minlength: (value, min = 0) => typeof value === 'string' ? value.length >= min : false,
+				maxlength: (value, max = Infinity) => typeof value === 'string' ? value.length <= max : false,
 				type: (value, type) => core.type(value) === type,
 				is: (value, types) => core.is(value, types, true),
-				range: (value, range = [-Infinity, Infinity]) => (core.is(range, 'array') && range.length > 1) ? Number(value) >= Number(range[0]) && Number(value) <= Number(range[1]) : false,
-				equal(value, to)  {
+				range(value, range) {
 
-					return typeof this === 'object' && this.hasOwnProperty(to) ? value === this[to] : false;
+					if (core.is(range, 'array') && range.length > 1)
+
+						return value >= range[0] && value <= range[1];
+
+					throw new Error('The range is invalid.');
+
+				},
+				equal(value, to) {
+
+					return value === this[to];
 
 				},
 				conditional: (value, conditional) => conditional(value),
@@ -65,7 +75,7 @@
 
 		type(value) {
 
-			return value === null ? 'null' : (typeof value === 'object' || typeof value === 'function' ? specificTypes[specificTypes.toString.call(value)] || 'object' : typeof value);
+			return value === null ? 'null' : (/object|function/.test(typeof value) ? specificTypes[specificTypes.toString.call(value)] || 'object' : typeof value);
 
 		}
 

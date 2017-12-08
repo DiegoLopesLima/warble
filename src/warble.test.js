@@ -55,6 +55,7 @@
 			}),
 
 			invalidResponse = model.validate({
+				paramA: 0,
 				paramB: -1,
 				paramC: -1,
 				paramD: 0,
@@ -103,6 +104,12 @@
 
 		expect(() => warble.validate()).toThrow();
 
+		expect(() => warble.validate('lorem', { test: true })).toThrow();
+
+		expect(warble.validate(0, { maxlength: 3 }).valid).toBe(false);
+
+		expect(() => warble.validate(5, { range: null})).toThrow();
+
 	});
 
 	test('warble.type', () => {
@@ -133,6 +140,8 @@
 
 		expect(warble.type(null)).toBe('null');
 
+		expect(warble.type(new Map)).toBe('object');
+
 	});
 
 	test('warble.is', () => {
@@ -143,11 +152,11 @@
 
 		expect(warble.is('x@x', 'email')).toBe(true);
 
-		expect(warble.is('abc', 'email')).toBe(false);
+		expect(warble.is('foo', 'email')).toBe(false);
 
 		expect(warble.is('-1', ['numeric', 'positive'])).toBe(false);
 
-		expect(warble.is('-1', ['numeric', 'negative'])).toBe(true);
+		expect(warble.is('-1', ['numeric', 'negative', 'string'])).toBe(true);
 
 		expect(warble.is('')).toBe(false);
 
@@ -161,7 +170,7 @@
 
 		expect(warble.subtypes.email('x@x')).toBe(true);
 
-		expect(warble.subtypes.email('abc')).toBe(false);
+		expect(warble.subtypes.email('foo')).toBe(false);
 
 		expect(warble.subtypes.email('')).toBe(false);
 
