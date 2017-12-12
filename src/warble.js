@@ -165,7 +165,7 @@
 
 			else
 
-				throw new Error(`The param "${name}" is not a recognized validation function.`);
+				throw new Error(`"${name}" is not a recognized validation function.`);
 
 			if (typeof response === 'object') {
 
@@ -235,7 +235,7 @@
 
 						response.setData(index, modelFragment.validate(data[index]));
 
-					else if (typeof modelFragment === 'object') {
+					else {
 
 						for (let validation in modelFragment)
 

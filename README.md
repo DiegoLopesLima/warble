@@ -54,7 +54,7 @@ warble.is(value, ['numeric', 'positive']); // false
 #### Source
 
 ```javascript
-warble.validate(data.name, {
+warble.validate('Diego Lopes Lima', {
 	required: true,
 	minlength: 3
 });
