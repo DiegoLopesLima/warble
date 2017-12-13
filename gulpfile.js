@@ -4,6 +4,8 @@ const
 
 	gulpBabel = require('gulp-babel'),
 
+	gulpUMD = require('gulp-umd'),
+
 	gulpSourcemaps = require('gulp-sourcemaps'),
 
 	gulpConcat = require('gulp-concat'),
@@ -34,11 +36,16 @@ gulp
 
 		gulp
 
-			.src('warble.js')
+			.src(`${sourcePath}/warble.js`)
 
 			.pipe(gulpSourcemaps.init())
 
 			.pipe(gulpConcat('warble.min.js'))
+
+			.pipe(gulpUMD({
+				exports: file => 'warble',
+				namespace: file => 'warble'
+			}))
 
 			.pipe(
 				gulpBabel({

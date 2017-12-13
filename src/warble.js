@@ -287,8 +287,4 @@
 
 	var warble = new Warble;
 
-	if (typeof module === 'object' && typeof module.exports === 'object')
-
-		module.exports = warble;
-
 }
