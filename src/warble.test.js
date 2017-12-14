@@ -1,6 +1,6 @@
 {
 
-	const warble = require('../dist/warble.min.js');
+	const warble = require('./warble.js');
 
 	test('warble.model', () => {
 

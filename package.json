@@ -36,7 +36,6 @@
     "gulp-concat": "^2.6.1",
     "gulp-jest": "^3.0.1",
     "gulp-sourcemaps": "^2.6.0",
-    "gulp-umd": "^0.2.1",
     "jest": "^21.2.1",
     "jest-cli": "^21.2.1"
   }
