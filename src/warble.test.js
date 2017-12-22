@@ -314,9 +314,7 @@
 
 		expect(warble.validations.required(undefined, false)).toBe(true);
 
-		expect(() => warble.validations.required('')).toThrow();
-
-		expect(() => warble.validations.required()).toThrow();
+		expect(warble.validations.required()).toBe(false);
 
 	});
 

@@ -38,7 +38,7 @@
 				positive: testRegExp(re.positive),
 				negative: testRegExp(re.negative),
 				numeric: isNumeric,
-				integer: value => isNumeric(value) ? Number.isInteger(Number(value)) : false,
+				integer: value => isNumeric(value) ? Number.isInteger(+value) : false,
 				even: value =>  isNumeric(value) ? value % 2 === 0 : false,
 				odd: value =>  isNumeric(value) ? (value < 0 ? (value * -1) : value) % 2 > 0 : false
 			};
